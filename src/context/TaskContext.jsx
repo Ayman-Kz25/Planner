@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from "react";
 import {
   collection,
@@ -8,9 +10,10 @@ import {
   deleteDoc,
   query,
   orderBy,
-  serverTimestamp 
+  serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../firebase/firestore";
+import { useAuth } from "./AuthContext";
 
 // Create context
 const TaskContext = createContext();
@@ -20,24 +23,24 @@ export const TaskProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const userId = "demo-user";
+  const { user } = useAuth();
 
   const fetchTasks = async () => {
     setLoading(true);
     try {
       const q = query(
-        collection(db, "users", userId, "tasks"),
-        orderBy("createdAt", "desc")
+        collection(db, "users", user, "tasks"),
+        orderBy("createdAt", "desc"),
       );
 
       const snapshot = await getDocs(q);
 
-      const data = snapshot.docs.map(doc => {
+      const data = snapshot.docs.map((doc) => {
         const taskData = doc.data();
         return {
           id: doc.id,
           ...taskData,
-          dueDate: taskData.dueDate ? taskData.dueDate.toDate() : null
+          dueDate: taskData.dueDate ? taskData.dueDate.toDate() : null,
         };
       });
 
@@ -52,10 +55,10 @@ export const TaskProvider = ({ children }) => {
   // Add a task
   const addTask = async (task) => {
     try {
-      await addDoc(collection(db, "users", userId, "tasks"), {
+      await addDoc(collection(db, "users", user, "tasks"), {
         ...task,
         dueDate: task.dueDate || null,
-        createdAt: serverTimestamp() 
+        createdAt: serverTimestamp(),
       });
 
       await fetchTasks();
@@ -67,9 +70,9 @@ export const TaskProvider = ({ children }) => {
   // Update a task
   const updateTask = async (taskId, updatedData) => {
     try {
-      const taskRef = doc(db, "users", userId, "tasks", taskId);
+      const taskRef = doc(db, "users", user, "tasks", taskId);
       await updateDoc(taskRef, updatedData);
-      await fetchTasks(); 
+      await fetchTasks();
     } catch (error) {
       console.error("Error updating task:", error);
     }
@@ -78,7 +81,7 @@ export const TaskProvider = ({ children }) => {
   // Delete a task
   const deleteTask = async (taskId) => {
     try {
-      const taskRef = doc(db, "users", userId, "tasks", taskId);
+      const taskRef = doc(db, "users", user, "tasks", taskId);
       await deleteDoc(taskRef);
       await fetchTasks();
     } catch (error) {
@@ -87,8 +90,12 @@ export const TaskProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchTasks();
-  }, []);
+    if (user) {
+      fetchTasks();
+    } else {
+      setTasks([]);
+    }
+  }, [user]);
 
   return (
     <TaskContext.Provider
@@ -98,7 +105,7 @@ export const TaskProvider = ({ children }) => {
         fetchTasks,
         addTask,
         updateTask,
-        deleteTask
+        deleteTask,
       }}
     >
       {children}
