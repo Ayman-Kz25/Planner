@@ -26,8 +26,7 @@ export const TaskProvider = ({ children }) => {
   const { user } = useAuth();
 
   const fetchTasks = async () => {
-
-    if(!user) return;
+    if (!user) return;
 
     setLoading(true);
 
@@ -58,7 +57,8 @@ export const TaskProvider = ({ children }) => {
 
   // Add a task
   const addTask = async (task) => {
-    if(!user) return;
+    if (!user)
+    throw new Error("User not authenticated");
 
     try {
       await addDoc(collection(db, "users", user.uid, "tasks"), {
@@ -75,7 +75,8 @@ export const TaskProvider = ({ children }) => {
 
   // Update a task
   const updateTask = async (taskId, updatedData) => {
-    if(!user) return;
+    if (!user)
+    throw new Error("User not authenticated");
 
     try {
       const taskRef = doc(db, "users", user.uid, "tasks", taskId);
@@ -88,7 +89,8 @@ export const TaskProvider = ({ children }) => {
 
   // Delete a task
   const deleteTask = async (taskId) => {
-    if(!user) return;
+    if (!user)
+    throw new Error("User not authenticated");
 
     try {
       const taskRef = doc(db, "users", user.uid, "tasks", taskId);
@@ -104,6 +106,7 @@ export const TaskProvider = ({ children }) => {
       fetchTasks();
     } else {
       setTasks([]);
+      setLoading(false);
     }
   }, [user]);
 

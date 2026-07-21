@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 
 const RegisterPage = () => {
-  const { signup } = useAuth();
+  const { user, signup } = useAuth();
   const navigate = useNavigate();
 
   const [name, setName] = useState("");
@@ -12,6 +12,28 @@ const RegisterPage = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const getFirebaseError = (code) => {
+    switch (code) {
+      case "auth/user-not-found":
+        return "No account found.";
+
+      case "auth/wrong-password":
+        return "Incorrect password.";
+
+      case "auth/email-already-in-use":
+        return "Email already registered.";
+
+      case "auth/invalid-email":
+        return "Invalid email address.";
+
+      case "auth/weak-password":
+        return "Password should be at least 6 characters.";
+
+      default:
+        return "Something went wrong.";
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,11 +45,15 @@ const RegisterPage = () => {
       await signup(name, email, password);
       navigate("/");
     } catch (err) {
-      setError(err.message);
+      setError(getFirebaseError(err.code));
     } finally {
       setLoading(false);
     }
   };
+
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
 
   return <></>;
 };
