@@ -26,10 +26,14 @@ export const TaskProvider = ({ children }) => {
   const { user } = useAuth();
 
   const fetchTasks = async () => {
+
+    if(!user) return;
+
     setLoading(true);
+
     try {
       const q = query(
-        collection(db, "users", user, "tasks"),
+        collection(db, "users", user.uid, "tasks"),
         orderBy("createdAt", "desc"),
       );
 
@@ -54,8 +58,10 @@ export const TaskProvider = ({ children }) => {
 
   // Add a task
   const addTask = async (task) => {
+    if(!user) return;
+
     try {
-      await addDoc(collection(db, "users", user, "tasks"), {
+      await addDoc(collection(db, "users", user.uid, "tasks"), {
         ...task,
         dueDate: task.dueDate || null,
         createdAt: serverTimestamp(),
@@ -69,8 +75,10 @@ export const TaskProvider = ({ children }) => {
 
   // Update a task
   const updateTask = async (taskId, updatedData) => {
+    if(!user) return;
+
     try {
-      const taskRef = doc(db, "users", user, "tasks", taskId);
+      const taskRef = doc(db, "users", user.uid, "tasks", taskId);
       await updateDoc(taskRef, updatedData);
       await fetchTasks();
     } catch (error) {
@@ -80,8 +88,10 @@ export const TaskProvider = ({ children }) => {
 
   // Delete a task
   const deleteTask = async (taskId) => {
+    if(!user) return;
+
     try {
-      const taskRef = doc(db, "users", user, "tasks", taskId);
+      const taskRef = doc(db, "users", user.uid, "tasks", taskId);
       await deleteDoc(taskRef);
       await fetchTasks();
     } catch (error) {
