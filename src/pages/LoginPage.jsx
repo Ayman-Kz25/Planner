@@ -12,6 +12,28 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const getFirebaseError = (code) => {
+    switch (code) {
+      case "auth/user-not-found":
+        return "No account found.";
+
+      case "auth/wrong-password":
+        return "Incorrect password.";
+
+      case "auth/email-already-in-use":
+        return "Email already registered.";
+
+      case "auth/invalid-email":
+        return "Invalid email address.";
+
+      case "auth/weak-password":
+        return "Password should be at least 6 characters.";
+
+      default:
+        return "Something went wrong.";
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -22,7 +44,7 @@ const LoginPage = () => {
       await login(email, password);
       navigate("/");
     } catch (err) {
-      setError(err.message);
+      setError(getFirebaseError(err.code));
     } finally {
       setLoading(false);
     }
@@ -33,7 +55,7 @@ const LoginPage = () => {
       await loginWithGoogle();
       navigate("/");
     } catch (err) {
-      setError(err.message);
+      setError(getFirebaseError(err.code));
     }
   };
 

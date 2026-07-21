@@ -13,52 +13,26 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 const App = () => {
   return (
     <BrowserRouter>
-      <AppLayout>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <DashboardPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route
-            path="/in-progress"
-            element={
-              <ProtectedRoute>
-                <InProgressPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/completed"
-            element={
-              <ProtectedRoute>
-                <CompletedPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/calendar"
-            element={
-              <ProtectedRoute>
-                <CalendarPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/category/:category"
-            element={
-              <ProtectedRoute>
-                <CategoryPage />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </AppLayout>
+      <Routes>
+        {/* Public */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+
+        {/* Protected */}
+        <Route
+          element={
+            <ProtectedRoute>
+              <AppLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<DashboardPage />} />
+          <Route path="in-progress" element={<InProgressPage />} />
+          <Route path="completed" element={<CompletedPage />} />
+          <Route path="calendar" element={<CalendarPage />} />
+          <Route path="category/:category" element={<CategoryPage />} />
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 };
