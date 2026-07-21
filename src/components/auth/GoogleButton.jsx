@@ -1,9 +1,9 @@
-const GoogleButton = ({ onClick, loading = false }) => {
+const GoogleButton = ({ onClick, loading = false, disabled }) => {
   return (
     <button
       type="button"
       onClick={onClick}
-      disabled={loading}
+      disabled={loading || disabled}
       className="
         w-full
         flex

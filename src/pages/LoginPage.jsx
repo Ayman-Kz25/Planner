@@ -107,12 +107,12 @@ const LoginPage = () => {
         />
 
         <div className="flex justify-end">
-          <button
-            type="button"
+          <Link
+            to="/forgot-password"
             className="text-sm text-slate-600 hover:text-black cursor-pointer"
           >
             Forgot Password?
-          </button>
+          </Link>
         </div>
 
         {error && <p className="text-sm text-red-500">{error}</p>}
@@ -128,7 +128,7 @@ const LoginPage = () => {
 
       <AuthDivider />
 
-      <GoogleButton onClick={handleGoogleLogin} loading={googleLoading} />
+      <GoogleButton onClick={handleGoogleLogin} loading={googleLoading} disabled={loading} />
 
       <p className="mt-8 text-center text-sm text-slate-600">
         Don't have an account?{" "}
