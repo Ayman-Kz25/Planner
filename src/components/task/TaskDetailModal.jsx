@@ -246,6 +246,7 @@ const TaskDetailModal = ({ task, onClose }) => {
             border-slate-200
             p-5
             sm:px-8
+            items-end
           "
         >
           <button
