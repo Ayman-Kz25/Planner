@@ -1,33 +1,46 @@
 import { useState } from "react";
-import Header from "./Header";
-import Sidebar from "./Sidebar";
 import { Outlet } from "react-router-dom";
 
-const AppLayout = () => {
+import Header from "./Header";
+import Sidebar from "./Sidebar";
 
+const HEADER_HEIGHT = 72;
+
+const AppLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  }
-  const closeSidebar = () => {
-    setIsSidebarOpen(false);
-  }
   return (
-    <div className="container">
-      {/* Top Header */}
-      <Header onToggleSidebar={toggleSidebar} />
+    <div className="h-screen overflow-hidden bg-slate-100">
 
-      {/* Main Layout */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar */}
-        <Sidebar isOpen={isSidebarOpen} isClose={closeSidebar}/>
+      <Header
+        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+      />
 
-        {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-6">
-          <Outlet />
+      <div
+        className="flex gap-5 p-5"
+        style={{ height: `calc(100vh - ${HEADER_HEIGHT}px)` }}
+      >
+        <Sidebar
+          isOpen={isSidebarOpen}
+          isClose={() => setIsSidebarOpen(false)}
+        />
+
+        <main className="flex-1 overflow-y-auto">
+          <div
+            className="
+              min-h-full
+              rounded-[28px]
+              border border-slate-200
+              bg-white
+              shadow-sm
+              p-8
+            "
+          >
+            <Outlet />
+          </div>
         </main>
       </div>
+
     </div>
   );
 };

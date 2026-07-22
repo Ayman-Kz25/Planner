@@ -1,66 +1,185 @@
+import {
+  LayoutDashboard,
+  Clock3,
+  CheckCircle2,
+  Briefcase,
+  User,
+  GraduationCap,
+  CalendarDays,
+  X,
+} from "lucide-react";
+
 import { NavLink } from "react-router-dom";
 
 const Sidebar = ({ isOpen, isClose }) => {
   const linkClass = ({ isActive }) =>
-    `block px-4 py-2 rounded text-[18px] transition ${
-      isActive
-        ? "bg-[var(--primary)] text-[var(--bg)] font-semibold"
-        : "text-gray-500 text-[18px] hover:bg-[var(--bg)]"
-    }`;
+    `
+      group flex items-center gap-3
+      rounded-xl
+      px-3 py-2.5
+      text-sm font-medium
+      transition-all duration-200
+
+      ${
+        isActive
+          ? "bg-slate-900 text-white shadow-sm"
+          : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+      }
+    `;
 
   return (
     <>
-      {/* Overlay for Mobile */}
+      {/* Mobile Overlay */}
+
       <div
-        className={`fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity ${
-          isOpen ? "opacity-100 visible" : "opacity-0 invisible"
-        }`}
         onClick={isClose}
-      ></div>
+        className={`
+          fixed inset-0 z-40 bg-black/20 backdrop-blur-sm
+          transition-opacity duration-300
+          md:hidden
+          ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"}
+        `}
+      />
+
+      {/* Sidebar */}
+
       <aside
-        className={`sidebar ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
+        className={`
+          fixed md:static
+          left-0 top-[72px]
+          z-50
+
+          h-[calc(100vh-72px)]
+          w-72
+
+          bg-white
+          border-r border-slate-200
+
+          transition-transform duration-300
+
+          ${
+            isOpen
+              ? "translate-x-0"
+              : "-translate-x-full md:translate-x-0"
+          }
+        `}
       >
-        {/* Close btn for mobile overlay */}
-        <div className="flex justify-end p-4 mb-6 md:hidden">
-          <button onClick={isClose} className="text-2xl text-[var(--bg)]">
-            ❌
+        {/* Mobile Close */}
+
+        <div className="flex justify-end p-4 md:hidden">
+          <button
+            onClick={isClose}
+            className="
+              rounded-lg
+              p-2
+              hover:bg-slate-100
+            "
+          >
+            <X size={18} />
           </button>
         </div>
-        {/* Desktop View */}
-        <nav className="px-4 pb-6">
-          <NavLink to="/" end className={linkClass}>
-            ⚙️ All Tasks
-          </NavLink>
 
-          <NavLink to="/in-progress" className={linkClass}>
-            ⌛ In Progress
-          </NavLink>
+        <nav className="px-4 py-6 space-y-8">
 
-          <NavLink to="/completed" className={linkClass}>
-            ✅ Completed
-          </NavLink>
+          {/* Main */}
 
-          <div className="mt-4">
-            <p>Categories</p>
+          <div className="space-y-2">
 
-            <NavLink to="/category/work" className={linkClass}>
-              💼 Work
+            <NavLink to="/" end className={linkClass}>
+              <LayoutDashboard size={18} />
+              <span>All Tasks</span>
             </NavLink>
 
-            <NavLink to="/category/personal" className={linkClass}>
-              📌 Personal
+            <NavLink
+              to="/in-progress"
+              className={linkClass}
+            >
+              <Clock3 size={18} />
+              <span>In Progress</span>
             </NavLink>
 
-            <NavLink to="/category/study" className={linkClass}>
-              🗂️ Study
+            <NavLink
+              to="/completed"
+              className={linkClass}
+            >
+              <CheckCircle2 size={18} />
+              <span>Completed</span>
             </NavLink>
+
           </div>
 
-          <div className="mt-4">
-            <NavLink to="/calendar" className={linkClass}>
-              🗓️ Calendar
-            </NavLink>
+          {/* Categories */}
+
+          <div>
+
+            <p className="
+                px-3
+                mb-3
+                text-xs
+                uppercase
+                tracking-[0.18em]
+                text-slate-400
+                font-semibold
+              ">
+              Categories
+            </p>
+
+            <div className="space-y-2">
+
+              <NavLink
+                to="/category/work"
+                className={linkClass}
+              >
+                <Briefcase size={18} />
+                Work
+              </NavLink>
+
+              <NavLink
+                to="/category/personal"
+                className={linkClass}
+              >
+                <User size={18} />
+                Personal
+              </NavLink>
+
+              <NavLink
+                to="/category/study"
+                className={linkClass}
+              >
+                <GraduationCap size={18} />
+                Study
+              </NavLink>
+
+            </div>
+
           </div>
+
+          {/* Calendar */}
+
+          <div>
+
+            <p className="
+                px-3
+                mb-3
+                text-xs
+                uppercase
+                tracking-[0.18em]
+                text-slate-400
+                font-semibold
+              ">
+              Planning
+            </p>
+
+            <NavLink
+              to="/calendar"
+              className={linkClass}
+            >
+              <CalendarDays size={18} />
+              Calendar
+            </NavLink>
+
+          </div>
+
         </nav>
       </aside>
     </>

@@ -20,22 +20,36 @@ const Header = ({ onToggleSidebar }) => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-gray-50/70 backdrop-blur-xl">
+      <header
+        className="
+          sticky top-0 z-40
+          bg-slate-100/70
+          backdrop-blur-xl
+          px-3 pt-3 pb-2
+          sm:px-4 sm:pt-4
+        "
+      >
         <div
           className="
-            mx-4 mt-4
-            flex h-20 items-center justify-between
+            mx-auto
+            flex
+            h-16
+            items-center
+            justify-between
             rounded-2xl
-            border border-white/60
-            bg-white/70
-            px-6
+            border border-white/70
+            bg-white/80
+            px-4
             shadow-sm
             backdrop-blur-xl
+
+            sm:h-[72px]
+            sm:px-6
           "
         >
           {/* Left */}
 
-          <div className="flex items-center gap-5">
+          <div className="flex min-w-0 items-center gap-3 sm:gap-4">
             <button
               onClick={onToggleSidebar}
               className="
@@ -49,39 +63,62 @@ const Header = ({ onToggleSidebar }) => {
               <Menu size={22} />
             </button>
 
-            <div className="flex items-center gap-4">
-              <div
+            {/* Logo */}
+
+            <div
+              className="
+                flex
+                h-10
+                w-10
+                shrink-0
+                items-center
+                justify-center
+                rounded-2xl
+                bg-gradient-to-br
+                from-rose-300
+                to-rose-500
+                text-base
+                font-bold
+                text-white
+                shadow-sm
+
+                sm:h-11
+                sm:w-11
+              "
+            >
+              P
+            </div>
+
+            {/* Title */}
+
+            <div className="min-w-0">
+              <h1
                 className="
-                  flex h-11 w-11
-                  items-center justify-center
-                  rounded-2xl
-                  bg-gradient-to-br
-                  from-rose-300
-                  to-rose-500
-                  text-lg
-                  font-bold
-                  text-white
-                  shadow-sm
+                  truncate
+                  text-xl
+                  font-semibold
+                  tracking-tight
+                  text-slate-900
+
+                  sm:text-2xl
+                  hidden
+                  sm:flex
                 "
               >
-                P
-              </div>
+                Planner
+              </h1>
 
-              <div>
-                <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
-                  Planner
-                </h1>
-
-                <p className="text-sm text-slate-500">
-                  Welcome back, {user?.displayName?.split(" ")[0] || "there"}.
-                </p>
-              </div>
+              <p className="hidden truncate text-sm text-slate-500 sm:block">
+                Welcome back, {user?.displayName?.split(" ")[0] || "there"}.
+              </p>
             </div>
           </div>
 
           {/* Right */}
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
+            {/* Date */}
+
             <div
               className="
                 hidden
@@ -89,40 +126,56 @@ const Header = ({ onToggleSidebar }) => {
                 gap-2
                 rounded-xl
                 bg-slate-100
-                px-4 py-2
+                px-4
+                py-2
                 lg:flex
               "
             >
-              <CalendarDays size={17} className="text-slate-500" />
+              <CalendarDays
+                size={17}
+                className="text-slate-500"
+              />
 
               <span className="text-sm font-medium text-slate-600">
                 {today}
               </span>
             </div>
 
+            {/* Add Task */}
+
             <button
               onClick={() => setIsAddModalOpen(true)}
               className="
                 flex
                 items-center
+                justify-center
                 gap-2
                 rounded-xl
                 bg-slate-900
-                px-5
-                py-3
+                px-3
+                py-2.5
                 text-sm
                 font-medium
                 text-white
-                transition
+                transition-all
+                duration-200
+
                 hover:scale-[1.02]
                 hover:bg-black
                 active:scale-95
+
+                sm:px-5
+                sm:py-3
               "
             >
               <Plus size={18} />
 
-              <span className="hidden sm:block">New Task</span>
+              <span className="hidden md:block">
+                New Task
+              </span>
             </button>
+
+            {/* Avatar */}
 
             <UserMenu user={user} />
           </div>
