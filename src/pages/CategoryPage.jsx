@@ -1,121 +1,218 @@
-// pages/CategoryPage.jsx
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
+import { FolderOpen } from "lucide-react";
+import { isPast, isToday } from "date-fns";
 import { useParams } from "react-router-dom";
+
 import { useTasks } from "../context/TaskContext";
+import useTaskActions from "../hooks/useTaskActions";
+
 import TaskList from "../components/task/TaskList";
 import FilterBar from "../components/filters/FilterBar";
 import EditTaskModal from "../components/task/EditTaskModal";
 import ConfirmDeleteModal from "../components/task/ConfirmDeleteModal";
 import EmptyState from "../components/ui/EmptyState";
-import { isToday, isPast } from "date-fns";
 
 const CategoryPage = () => {
-  const { category } = useParams(); // work | personal | study
-  const { tasks, deleteTask } = useTasks();
+  const { category } = useParams();
+  const { tasks } = useTasks();
+
+  const {
+    selectedTask,
+    isEditOpen,
+    isDeleteOpen,
+    handleEdit,
+    handleDelete,
+    closeEdit,
+    closeDelete,
+    confirmDelete,
+  } = useTaskActions();
 
   const [filters, setFilters] = useState({
+    search: "",
     status: "",
     priority: "",
     due: "",
   });
 
-  const [selectedTask, setSelectedTask] = useState(null);
-  const [isEditOpen, setIsEditOpen] = useState(false);
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-
-  // 🔹 Edit handler
-  const handleEdit = (task) => {
-    setSelectedTask(task);
-    setIsEditOpen(true);
-  };
-
-  // 🔹 Delete handler
-  const handleDelete = (task) => {
-    setSelectedTask(task);
-    setIsDeleteOpen(true);
-  };
-
-  const confirmDelete = () => {
-    if (selectedTask) {
-      deleteTask(selectedTask.id);
-      setIsDeleteOpen(false);
-      setSelectedTask(null);
-    }
-  };
-
-  // 🔹 Filter tasks
   const filteredTasks = useMemo(() => {
     return tasks.filter((task) => {
       let pass = true;
 
-      // Category from route
-      if (category) {
+      // Category
+      pass =
+        pass &&
+        task.category?.toLowerCase() === category?.toLowerCase();
+
+      // Search
+      if (filters.search) {
+        const search = filters.search.toLowerCase();
+
         pass =
           pass &&
-          task.category?.toLowerCase() === category.toLowerCase();
+          (task.title.toLowerCase().includes(search) ||
+            task.description?.toLowerCase().includes(search));
       }
 
+      // Status
       if (filters.status) {
         pass = pass && task.status === filters.status;
       }
 
+      // Priority
       if (filters.priority) {
         pass = pass && task.priority === filters.priority;
       }
 
+      // Due Date
       if (filters.due) {
         if (!task.dueDate) return false;
 
-        const due = task.dueDate.seconds
+        const due = task.dueDate?.seconds
           ? new Date(task.dueDate.seconds * 1000)
           : new Date(task.dueDate);
 
-        if (filters.due === "today") pass = pass && isToday(due);
-        if (filters.due === "overdue")
-          pass = pass && isPast(due) && task.status !== "completed";
-        if (filters.due === "upcoming")
-          pass = pass && !isPast(due) && !isToday(due);
+        if (filters.due === "today") {
+          pass = pass && isToday(due);
+        }
+
+        if (filters.due === "overdue") {
+          pass =
+            pass &&
+            isPast(due) &&
+            task.status !== "completed";
+        }
+
+        if (filters.due === "upcoming") {
+          pass =
+            pass &&
+            !isPast(due) &&
+            !isToday(due);
+        }
       }
 
       return pass;
     });
   }, [tasks, category, filters]);
 
+  const categoryName =
+    category?.charAt(0).toUpperCase() + category?.slice(1);
+
   return (
-    <div>
-      <h2 className="text-lg font-semibold mb-4 capitalize">
-        {category} Tasks
-      </h2>
+    <div className="space-y-8">
+      {/* Hero */}
 
-      {/* Filters (NO category dropdown) */}
-      <FilterBar filters={filters} setFilters={setFilters} />
+      <section>
+        <h1 className="text-3xl font-bold text-slate-900">
+          {categoryName}
+        </h1>
 
-      {filteredTasks.length > 0 ? (
-        <TaskList
-          tasks={filteredTasks}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-        />
-      ) : (
-        <EmptyState />
-      )}
+        <p className="mt-2 text-slate-500">
+          Manage all of your {categoryName?.toLowerCase()} tasks in one place.
+        </p>
+      </section>
+
+      {/* Stats */}
+
+      <section>
+        <div
+          className="
+            max-w-sm
+            rounded-3xl
+            border
+            border-slate-200
+            bg-white
+            p-6
+            shadow-sm
+            transition
+            hover:shadow-md
+          "
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-slate-500">
+                {categoryName} Tasks
+              </p>
+
+              <h2 className="mt-2 text-4xl font-bold text-slate-900">
+                {filteredTasks.length}
+              </h2>
+            </div>
+
+            <div
+              className="
+                rounded-2xl
+                bg-violet-100
+                p-4
+                text-violet-600
+              "
+            >
+              <FolderOpen size={28} />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Filters */}
+
+      <FilterBar
+        filters={filters}
+        setFilters={setFilters}
+      />
+
+      {/* Tasks */}
+
+      <section>
+        <div className="mb-5 flex items-center justify-between">
+          <h2 className="text-xl font-semibold text-slate-900">
+            {categoryName} Tasks
+          </h2>
+
+          <span
+            className="
+              rounded-full
+              bg-slate-100
+              px-3
+              py-1
+              text-sm
+              text-slate-600
+            "
+          >
+            {filteredTasks.length}{" "}
+            {filteredTasks.length === 1 ? "Task" : "Tasks"}
+          </span>
+        </div>
+
+        {filteredTasks.length ? (
+          <TaskList
+            tasks={filteredTasks}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+        ) : (
+          <EmptyState
+            title={`No ${categoryName?.toLowerCase()} tasks`}
+            description={`Create a ${categoryName?.toLowerCase()} task to get started.`}
+          />
+        )}
+      </section>
 
       {/* Modals */}
-      {selectedTask && (
-        <EditTaskModal
-          task={selectedTask}
-          isOpen={isEditOpen}
-          onClose={() => setIsEditOpen(false)}
-        />
-      )}
 
       {selectedTask && (
-        <ConfirmDeleteModal
-          isOpen={isDeleteOpen}
-          onClose={() => setIsDeleteOpen(false)}
-          onConfirm={confirmDelete}
-          taskTitle={selectedTask.title}
-        />
+        <>
+          <EditTaskModal
+            task={selectedTask}
+            isOpen={isEditOpen}
+            onClose={closeEdit}
+          />
+
+          <ConfirmDeleteModal
+            isOpen={isDeleteOpen}
+            onClose={closeDelete}
+            onConfirm={confirmDelete}
+            taskTitle={selectedTask.title}
+          />
+        </>
       )}
     </div>
   );
