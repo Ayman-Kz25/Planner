@@ -3,6 +3,7 @@ import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   onAuthStateChanged,
+  reload,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -33,7 +34,9 @@ export const AuthProvider = ({ children }) => {
 
     await updateProfile(credentials.user, { displayName: name });
 
-    return credentials.user;
+    await reload(credentials.user);
+
+    return auth.currentUser;
   };
 
   // Login
