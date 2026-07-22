@@ -10,10 +10,12 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ScrollToTop from "./components/ui/ScrollToTop";
 
 const App = () => {
   return (
     <BrowserRouter>
+    <ScrollToTop />
       <Routes>
         {/* Public */}
         <Route path="/login" element={<LoginPage />} />
