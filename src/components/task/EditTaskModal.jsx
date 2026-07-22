@@ -1,49 +1,58 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import {
+  Calendar,
+  CheckCircle2,
+  FileText,
+  FolderOpen,
+  Loader2,
+  Pencil,
+  Save,
+  Signal,
+  X,
+} from "lucide-react";
+
 import { useTasks } from "../../context/TaskContext";
 
 const EditTaskModal = ({ task, isOpen, onClose }) => {
   const { updateTask } = useTasks();
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("Work");
-  const [dueDate, setDueDate] = useState("");
   const [status, setStatus] = useState("todo");
   const [priority, setPriority] = useState("medium");
+  const [dueDate, setDueDate] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Populate fields when task changes
   useEffect(() => {
-    if (task) {
-      setTitle(task.title || "");
-      setDescription(task.description || "");
-      setCategory(task.category || "Work");
-      setStatus(task.status || "todo");
-      setPriority(task.priority || "medium");
+    if (!task) return;
 
-      // Safely handle Firestore timestamp or JS Date
-      if (task.dueDate) {
-        if (task.dueDate.seconds) {
-          setDueDate(new Date(task.dueDate.seconds * 1000).toISOString().split("T")[0]);
-        } else if (task.dueDate instanceof Date) {
-          setDueDate(task.dueDate.toISOString().split("T")[0]);
-        } else {
-          setDueDate("");
-        }
-      } else {
-        setDueDate("");
-      }
+    setTitle(task.title || "");
+    setDescription(task.description || "");
+    setCategory(task.category || "Work");
+    setStatus(task.status || "todo");
+    setPriority(task.priority || "medium");
+
+    if (task.dueDate) {
+      const date = task.dueDate.seconds
+        ? new Date(task.dueDate.seconds * 1000)
+        : new Date(task.dueDate);
+
+      setDueDate(date.toISOString().split("T")[0]);
+    } else {
+      setDueDate("");
     }
   }, [task]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !task) return null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!title.trim()) {
-      alert("Title is required");
-      return;
-    }
+
+    if (!title.trim()) return;
+
     setLoading(true);
+
     try {
       await updateTask(task.id, {
         title,
@@ -53,89 +62,375 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
         priority,
         dueDate: dueDate ? new Date(dueDate) : null,
       });
+
       onClose();
     } catch (error) {
-      console.error("Failed to update task:", error);
-      alert("Error updating task. Please try again.");
+      console.error(error);
+      alert("Failed to update task.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="task-container">
-      <div className="task-modal">
-        <h2 className="title">Edit Task</h2>
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            type="text"
-            placeholder="Title"
-            className="add-input"
-            required
-          />
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Description"
-            className="add-input"
-          />
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="add-input"
-            required
-          >
-            <option value="">Please Select</option>
-            <option value="Work">Work</option>
-            <option value="Personal">Personal</option>
-            <option value="Study">Study</option>
-          </select>
-          <select
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-            className="add-input"
-            required
-          >
-            <option value="">Please Select</option>
-            <option value="todo">Todo</option>
-            <option value="in-progress">In Progress</option>
-            <option value="completed">Completed</option>
-          </select>
-          <select
-            value={priority}
-            onChange={(e) => setPriority(e.target.value)}
-            className="add-input"
-            required
-          >
-            <option value="">Please Select</option>
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </select>
-          <input
-            type="date"
-            value={dueDate}
-            onChange={(e) => setDueDate(e.target.value)}
-            className="add-input"
-          />
-          <div className="btn-container">
-            <button
-              type="button"
-              onClick={onClose}
-              className="cancel-btn"
-              disabled={loading}
+    <div
+      className="
+        fixed inset-0 z-[9999]
+        flex items-center justify-center
+        bg-slate-900/50
+        backdrop-blur-sm
+        p-3 sm:p-5
+      "
+    >
+      <div
+        className="
+          flex
+          max-h-[92vh]
+          w-full
+          max-w-2xl
+          flex-col
+          overflow-hidden
+          rounded-2xl
+          sm:rounded-3xl
+          border
+          border-slate-200
+          bg-white
+          shadow-2xl
+        "
+      >
+        {/* Header */}
+
+        <div
+          className="
+            flex items-start justify-between
+            gap-4
+            border-b
+            border-slate-200
+            px-5
+            py-5
+            sm:px-8
+          "
+        >
+          <div className="min-w-0">
+            <h2
+              className="
+                text-xl
+                font-bold
+                text-slate-900
+                sm:text-2xl
+              "
             >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="btn"
-              disabled={loading}
+              Edit Task
+            </h2>
+
+            <p className="mt-1 text-sm text-slate-500">
+              Update your task information.
+            </p>
+          </div>
+
+          <button
+            onClick={onClose}
+            className="
+              rounded-xl
+              p-2
+              text-slate-500
+              transition
+              hover:bg-slate-100
+            "
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        {/* Form */}
+
+        <form
+          onSubmit={handleSubmit}
+          className="
+            flex-1
+            overflow-y-auto
+            p-5
+            sm:p-8
+          "
+        >
+          <div className="space-y-6">
+
+            {/* Title */}
+
+            <div>
+              <label className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-700">
+                <Pencil size={16} />
+                Task Title
+              </label>
+
+              <input
+                type="text"
+                required
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Enter task title"
+                className="
+                  w-full
+                  rounded-xl
+                  sm:rounded-2xl
+                  border
+                  border-slate-300
+                  px-4
+                  py-3
+                  text-sm
+                  outline-none
+                  transition
+                  focus:border-slate-900
+                  focus:ring-4
+                  focus:ring-slate-100
+                "
+              />
+            </div>
+
+            {/* Description */}
+
+            <div>
+              <label className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-700">
+                <FileText size={16} />
+                Description
+              </label>
+
+              <textarea
+                rows={5}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Write task details..."
+                className="
+                  w-full
+                  resize-none
+                  rounded-xl
+                  sm:rounded-2xl
+                  border
+                  border-slate-300
+                  px-4
+                  py-3
+                  text-sm
+                  outline-none
+                  transition
+                  focus:border-slate-900
+                  focus:ring-4
+                  focus:ring-slate-100
+                "
+              />
+            </div>
+
+            {/* Grid */}
+
+            <div className="grid gap-5 md:grid-cols-2">
+
+              {/* Category */}
+
+              <div>
+                <label className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-700">
+                  <FolderOpen size={16} />
+                  Category
+                </label>
+
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className="
+                    w-full
+                    rounded-xl
+                    sm:rounded-2xl
+                    border
+                    border-slate-300
+                    px-4
+                    py-3
+                    text-sm
+                    outline-none
+                    transition
+                    focus:border-slate-900
+                    focus:ring-4
+                    focus:ring-slate-100
+                  "
+                >
+                  <option>Work</option>
+                  <option>Personal</option>
+                  <option>Study</option>
+                </select>
+              </div>
+
+              {/* Due */}
+
+              <div>
+                <label className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-700">
+                  <Calendar size={16} />
+                  Due Date
+                </label>
+
+                <input
+                  type="date"
+                  value={dueDate}
+                  onChange={(e) => setDueDate(e.target.value)}
+                  className="
+                    w-full
+                    rounded-xl
+                    sm:rounded-2xl
+                    border
+                    border-slate-300
+                    px-4
+                    py-3
+                    text-sm
+                    outline-none
+                    transition
+                    focus:border-slate-900
+                    focus:ring-4
+                    focus:ring-slate-100
+                  "
+                />
+              </div>
+
+              {/* Status */}
+
+              <div>
+                <label className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-700">
+                  <CheckCircle2 size={16} />
+                  Status
+                </label>
+
+                <select
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  className="
+                    w-full
+                    rounded-xl
+                    sm:rounded-2xl
+                    border
+                    border-slate-300
+                    px-4
+                    py-3
+                    text-sm
+                    outline-none
+                    transition
+                    focus:border-slate-900
+                    focus:ring-4
+                    focus:ring-slate-100
+                  "
+                >
+                  <option value="todo">Todo</option>
+                  <option value="in-progress">In Progress</option>
+                  <option value="completed">Completed</option>
+                </select>
+              </div>
+
+              {/* Priority */}
+
+              <div>
+                <label className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-700">
+                  <Signal size={16} />
+                  Priority
+                </label>
+
+                <select
+                  value={priority}
+                  onChange={(e) => setPriority(e.target.value)}
+                  className="
+                    w-full
+                    rounded-xl
+                    sm:rounded-2xl
+                    border
+                    border-slate-300
+                    px-4
+                    py-3
+                    text-sm
+                    outline-none
+                    transition
+                    focus:border-slate-900
+                    focus:ring-4
+                    focus:ring-slate-100
+                  "
+                >
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </select>
+              </div>
+
+            </div>
+
+            {/* Footer */}
+
+            <div
+              className="
+                flex
+                flex-col-reverse
+                gap-3
+                border-t
+                border-slate-200
+                pt-6
+
+                sm:flex-row
+                sm:justify-end
+              "
             >
-              {loading ? "Saving..." : "Save"}
-            </button>
+              <button
+                type="button"
+                onClick={onClose}
+                disabled={loading}
+                className="
+                  w-full
+                  rounded-xl
+                  border
+                  border-slate-300
+                  px-6
+                  py-3
+                  font-medium
+                  text-slate-700
+                  transition
+                  hover:bg-slate-100
+
+                  sm:w-auto
+                "
+              >
+                Cancel
+              </button>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="
+                  flex
+                  w-full
+                  items-center
+                  justify-center
+                  gap-2
+                  rounded-xl
+                  bg-slate-900
+                  px-6
+                  py-3
+                  font-medium
+                  text-white
+                  transition
+                  hover:bg-black
+                  disabled:cursor-not-allowed
+                  disabled:opacity-70
+
+                  sm:w-auto
+                "
+              >
+                {loading ? (
+                  <>
+                    <Loader2
+                      size={18}
+                      className="animate-spin"
+                    />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Save size={18} />
+                    Save Changes
+                  </>
+                )}
+              </button>
+            </div>
+
           </div>
         </form>
       </div>

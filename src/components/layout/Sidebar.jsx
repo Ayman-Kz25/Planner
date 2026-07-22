@@ -14,15 +14,15 @@ import { NavLink } from "react-router-dom";
 const Sidebar = ({ isOpen, isClose }) => {
   const linkClass = ({ isActive }) =>
     `
-      group flex items-center gap-3
-      rounded-xl
-      px-3 py-2.5
+      flex items-center gap-3
+      rounded-2xl
+      px-4 py-3
       text-sm font-medium
       transition-all duration-200
 
       ${
         isActive
-          ? "bg-slate-900 text-white shadow-sm"
+          ? "bg-slate-900 text-white shadow-md"
           : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
       }
     `;
@@ -34,8 +34,10 @@ const Sidebar = ({ isOpen, isClose }) => {
       <div
         onClick={isClose}
         className={`
-          fixed inset-0 z-40 bg-black/20 backdrop-blur-sm
-          transition-opacity duration-300
+          fixed inset-0 z-40
+          bg-black/40
+          backdrop-blur-sm
+          transition-all duration-300
           md:hidden
           ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"}
         `}
@@ -45,141 +47,151 @@ const Sidebar = ({ isOpen, isClose }) => {
 
       <aside
         className={`
-          fixed md:static
-          left-0 top-[72px]
+          fixed left-0 top-0
           z-50
 
-          h-[calc(100vh-72px)]
+          h-screen
           w-72
 
           bg-white
           border-r border-slate-200
+          shadow-xl
 
-          transition-transform duration-300
+          transition-transform duration-300 ease-in-out
 
-          ${
-            isOpen
-              ? "translate-x-0"
-              : "-translate-x-full md:translate-x-0"
-          }
+          ${isOpen ? "translate-x-0" : "-translate-x-full"}
+
+          md:static
+          md:translate-x-0
+          md:h-[calc(100vh-88px)]
+          md:top-[88px]
+          md:w-72
+          md:shadow-none
         `}
       >
-        {/* Mobile Close */}
+        {/* Mobile Header */}
 
-        <div className="flex justify-end p-4 md:hidden">
+        <div
+          className="
+            flex items-center justify-between
+            border-b border-slate-200
+            px-6 py-5
+            md:hidden
+          "
+        >
+          <h2 className="text-xl font-bold text-slate-900">Planner</h2>
+
           <button
             onClick={isClose}
             className="
-              rounded-lg
+              rounded-xl
               p-2
+              transition
               hover:bg-slate-100
             "
           >
-            <X size={18} />
+            <X size={20} />
           </button>
         </div>
 
-        <nav className="px-4 py-6 space-y-8">
+        {/* Navigation */}
 
+        <nav
+          className="
+            flex h-full flex-col
+            overflow-y-auto
+            px-5 py-6
+            space-y-8
+          "
+        >
           {/* Main */}
 
           <div className="space-y-2">
-
-            <NavLink to="/" end className={linkClass}>
+            <NavLink to="/" onClick={isClose} end className={linkClass}>
               <LayoutDashboard size={18} />
               <span>All Tasks</span>
             </NavLink>
 
-            <NavLink
-              to="/in-progress"
-              className={linkClass}
-            >
+            <NavLink to="/in-progress" onClick={isClose} className={linkClass}>
               <Clock3 size={18} />
               <span>In Progress</span>
             </NavLink>
 
-            <NavLink
-              to="/completed"
-              className={linkClass}
-            >
+            <NavLink to="/completed" onClick={isClose} className={linkClass}>
               <CheckCircle2 size={18} />
               <span>Completed</span>
             </NavLink>
-
           </div>
 
           {/* Categories */}
 
           <div>
-
-            <p className="
-                px-3
+            <p
+              className="
                 mb-3
+                px-2
                 text-xs
+                font-semibold
                 uppercase
                 tracking-[0.18em]
                 text-slate-400
-                font-semibold
-              ">
+              "
+            >
               Categories
             </p>
 
             <div className="space-y-2">
-
               <NavLink
                 to="/category/work"
+                onClick={isClose}
                 className={linkClass}
               >
                 <Briefcase size={18} />
-                Work
+                <span>Work</span>
               </NavLink>
 
               <NavLink
                 to="/category/personal"
+                onClick={isClose}
                 className={linkClass}
               >
                 <User size={18} />
-                Personal
+                <span>Personal</span>
               </NavLink>
 
               <NavLink
                 to="/category/study"
+                onClick={isClose}
                 className={linkClass}
               >
                 <GraduationCap size={18} />
-                Study
+                <span>Study</span>
               </NavLink>
-
             </div>
-
           </div>
 
-          {/* Calendar */}
+          {/* Planning */}
 
           <div>
-
-            <p className="
-                px-3
+            <p
+              className="
                 mb-3
+                px-2
                 text-xs
+                font-semibold
                 uppercase
                 tracking-[0.18em]
                 text-slate-400
-                font-semibold
-              ">
+              "
+            >
               Planning
             </p>
 
-            <NavLink
-              to="/calendar"
-              className={linkClass}
-            >
+            <NavLink to="/calendar" onClick={isClose} className={linkClass}>
               <CalendarDays size={18} />
-              Calendar
+              <span>Calendar</span>
             </NavLink>
-
           </div>
-
         </nav>
       </aside>
     </>

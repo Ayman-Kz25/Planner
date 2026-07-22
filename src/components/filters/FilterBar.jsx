@@ -18,14 +18,32 @@ const FilterBar = ({ filters, setFilters }) => {
   };
 
   return (
-    <div className="mb-8 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div
+      className="
+        mb-6
+        rounded-3xl
+        border
+        border-slate-200
+        bg-white
+        p-4
+        shadow-sm
 
+        sm:p-5
+        lg:p-6
+      "
+    >
       {/* Search */}
 
       <div className="relative mb-5">
         <Search
           size={18}
-          className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+          className="
+            absolute
+            left-4
+            top-1/2
+            -translate-y-1/2
+            text-slate-400
+          "
         />
 
         <input
@@ -44,17 +62,35 @@ const FilterBar = ({ filters, setFilters }) => {
             py-3
             pl-11
             pr-4
+            text-sm
             outline-none
-            transition
-            focus:border-slate-400
+            transition-all
+            duration-200
+
+            placeholder:text-slate-400
+
+            focus:border-slate-900
             focus:bg-white
+            focus:ring-4
+            focus:ring-slate-100
           "
         />
       </div>
 
       {/* Filters */}
 
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
+      <div
+        className="
+          grid
+          grid-cols-1
+          gap-3
+
+          sm:grid-cols-2
+
+          xl:grid-cols-4
+        "
+      >
+        {/* Status */}
 
         <select
           value={filters.status}
@@ -62,15 +98,20 @@ const FilterBar = ({ filters, setFilters }) => {
             handleChange("status", e.target.value)
           }
           className="
-            flex-1
-            rounded-xl
+            w-full
+            rounded-2xl
             border
             border-slate-200
             bg-white
             px-4
             py-3
+            text-sm
             outline-none
-            focus:border-slate-400
+            transition-all
+
+            focus:border-slate-900
+            focus:ring-4
+            focus:ring-slate-100
           "
         >
           <option value="">All Status</option>
@@ -79,21 +120,28 @@ const FilterBar = ({ filters, setFilters }) => {
           <option value="completed">Completed</option>
         </select>
 
+        {/* Priority */}
+
         <select
           value={filters.priority}
           onChange={(e) =>
             handleChange("priority", e.target.value)
           }
           className="
-            flex-1
-            rounded-xl
+            w-full
+            rounded-2xl
             border
             border-slate-200
             bg-white
             px-4
             py-3
+            text-sm
             outline-none
-            focus:border-slate-400
+            transition-all
+
+            focus:border-slate-900
+            focus:ring-4
+            focus:ring-slate-100
           "
         >
           <option value="">All Priorities</option>
@@ -102,21 +150,28 @@ const FilterBar = ({ filters, setFilters }) => {
           <option value="high">High</option>
         </select>
 
+        {/* Due Date */}
+
         <select
           value={filters.due}
           onChange={(e) =>
             handleChange("due", e.target.value)
           }
           className="
-            flex-1
-            rounded-xl
+            w-full
+            rounded-2xl
             border
             border-slate-200
             bg-white
             px-4
             py-3
+            text-sm
             outline-none
-            focus:border-slate-400
+            transition-all
+
+            focus:border-slate-900
+            focus:ring-4
+            focus:ring-slate-100
           "
         >
           <option value="">All Dates</option>
@@ -125,30 +180,40 @@ const FilterBar = ({ filters, setFilters }) => {
           <option value="upcoming">Upcoming</option>
         </select>
 
+        {/* Reset */}
+
         <button
           onClick={resetFilters}
           className="
             flex
+            w-full
             items-center
             justify-center
             gap-2
-            rounded-xl
+
+            rounded-2xl
             border
             border-slate-200
-            px-5
+            bg-slate-50
+
+            px-4
             py-3
+
+            text-sm
             font-medium
-            text-slate-600
-            transition
+            text-slate-700
+
+            transition-all
+            duration-200
+
             hover:bg-slate-100
+            active:scale-[0.98]
           "
         >
           <RotateCcw size={18} />
-          Reset
+          Reset Filters
         </button>
-
       </div>
-
     </div>
   );
 };
