@@ -19,8 +19,7 @@ const UserMenu = ({ user }) => {
 
     window.addEventListener("click", handleClickOutside);
 
-    return () =>
-      window.removeEventListener("click", handleClickOutside);
+    return () => window.removeEventListener("click", handleClickOutside);
   }, []);
 
   const avatar =
@@ -34,10 +33,7 @@ const UserMenu = ({ user }) => {
   };
 
   return (
-    <div
-      ref={menuRef}
-      className="relative flex-shrink-0"
-    >
+    <div ref={menuRef} className="relative flex-shrink-0">
       {/* Avatar */}
 
       <button
@@ -99,9 +95,7 @@ const UserMenu = ({ user }) => {
                 {user?.displayName || "User"}
               </h3>
 
-              <p className="truncate text-sm text-slate-500">
-                {user?.email}
-              </p>
+              <p className="truncate text-sm text-slate-500">{user?.email}</p>
             </div>
           </div>
 
@@ -161,12 +155,15 @@ const UserMenu = ({ user }) => {
             className="
               flex w-full items-center justify-center gap-2
               rounded-xl
-              bg-rose-500
+              bg-gradient-to-br
+                from-rose-300
+                to-rose-500
               px-4 py-3
               font-medium
               text-white
-              transition
-              hover:bg-rose-600
+              transition-colors
+              duration-300
+            hover:bg-rose-600
               active:scale-[0.98]
               cursor-pointer
             "
