@@ -66,7 +66,7 @@ const UserMenu = ({ user }) => {
 
           <button
             onClick={logout}
-            className="mt-2 w-full rounded-xl bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+            className="mt-2 w-full rounded-xl bg-rose-400 px-4 py-2 text-white hover:bg-rose-500"
           >
             Logout
           </button>
