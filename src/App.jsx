@@ -23,7 +23,6 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
         {/* Protected */}
-        <ScrollToTop />
         <Route
           element={
             <ProtectedRoute>
