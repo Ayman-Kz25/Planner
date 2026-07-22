@@ -1,5 +1,7 @@
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import "../calendar.css";
+
 import { useTasks } from "../context/TaskContext";
 
 const CalendarView = () => {
@@ -11,14 +13,9 @@ const CalendarView = () => {
     const dayTasks = tasks.filter((task) => {
       if (!task.dueDate) return false;
 
-      let taskDate;
-      if (task.dueDate.seconds) {
-        taskDate = new Date(task.dueDate.seconds * 1000);
-      } else if (task.dueDate instanceof Date) {
-        taskDate = task.dueDate;
-      } else {
-        return false;
-      }
+      const taskDate = task.dueDate?.seconds
+        ? new Date(task.dueDate.seconds * 1000)
+        : new Date(task.dueDate);
 
       return (
         taskDate.getFullYear() === date.getFullYear() &&
@@ -30,24 +27,47 @@ const CalendarView = () => {
     if (!dayTasks.length) return null;
 
     return (
-      <ul className="mt-1 text-xs space-y-0.5">
-        {dayTasks.map((task) => (
-          <li key={task.id} className="truncate" title={task.title}>
+      <div className="mt-1 space-y-1">
+        {dayTasks.slice(0, 2).map((task) => (
+          <div
+            key={task.id}
+            title={task.title}
+            className="
+              truncate
+              rounded-md
+              bg-slate-900
+              px-1.5
+              py-0.5
+              text-[10px]
+              font-medium
+              text-white
+            "
+          >
             {task.title}
-          </li>
+          </div>
         ))}
-      </ul>
+
+        {dayTasks.length > 2 && (
+          <p className="text-[10px] text-slate-500">
+            +{dayTasks.length - 2} more
+          </p>
+        )}
+      </div>
     );
   };
 
   return (
-    <div className="m-6 p-4 bg-white rounded-xl shadow-xl flex justify-center items-center min-h-[calc(100vh-14rem)]">
-      {/* Force Calendar to fill wrapper */}
+    <section
+      className="p-6 bg-white rounded-3xl
+        border
+        border-slate-200
+        shadow-sm
+      "
+    >
       <Calendar
         tileContent={tileContent}
-        className="!h-full !w-full !border-2 !border-[var(--primary)] !rounded-xl"
       />
-    </div>
+    </section>
   );
 };
 
