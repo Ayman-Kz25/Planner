@@ -10,15 +10,21 @@ const AppLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="h-screen overflow-hidden bg-slate-100">
-
+    <div
+      className="h-screen overflow-hidden"
+      style={{
+        background: "var(--bg)",
+      }}
+    >
       <Header
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
       />
 
       <div
-        className="flex gap-5 p-5"
-        style={{ height: `calc(100vh - ${HEADER_HEIGHT}px)` }}
+        className="flex gap-3 p-3 sm:gap-5 sm:p-5"
+        style={{
+          height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+        }}
       >
         <Sidebar
           isOpen={isSidebarOpen}
@@ -27,20 +33,17 @@ const AppLayout = () => {
 
         <main className="flex-1 overflow-y-auto">
           <div
-            className="
-              min-h-full
-              rounded-[28px]
-              border border-slate-200
-              bg-white
-              shadow-sm
-              p-8
-            "
+            className="min-h-full rounded-[28px] border p-4 shadow-sm sm:p-6 lg:p-8"
+            style={{
+              background: "var(--card)",
+              borderColor: "var(--border)",
+              color: "var(--text)",
+            }}
           >
             <Outlet />
           </div>
         </main>
       </div>
-
     </div>
   );
 };

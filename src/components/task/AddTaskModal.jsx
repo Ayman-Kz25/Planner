@@ -60,13 +60,16 @@ const AddTaskModal = ({ isOpen, onClose }) => {
       className="
         fixed inset-0 z-[9999]
         flex items-center justify-center
-        bg-slate-900/50
+        bg-black/50
         backdrop-blur-sm
         p-3 sm:p-5
       "
     >
       <div
         className="
+          card-theme
+          border-theme
+          shadow-theme
           flex
           max-h-[92vh]
           w-full
@@ -74,45 +77,35 @@ const AddTaskModal = ({ isOpen, onClose }) => {
           flex-col
           overflow-hidden
           rounded-2xl
-          sm:rounded-3xl
           border
-          border-slate-200
-          bg-white
-          shadow-2xl
+          sm:rounded-3xl
         "
       >
         {/* Header */}
 
         <div
           className="
+            border-theme
             flex items-start justify-between
             gap-4
             border-b
-            border-slate-200
-            px-5
-            py-5
+            px-5 py-5
             sm:px-8
           "
         >
           <div className="min-w-0">
             <h2
               className="
+                text-theme
                 text-xl
                 font-bold
-                text-slate-900
                 sm:text-2xl
               "
             >
               Create Task
             </h2>
 
-            <p
-              className="
-                mt-1
-                text-sm
-                text-slate-500
-              "
-            >
+            <p className="text-muted-theme mt-1 text-sm">
               Add a new task to your planner.
             </p>
           </div>
@@ -120,18 +113,18 @@ const AddTaskModal = ({ isOpen, onClose }) => {
           <button
             onClick={onClose}
             className="
+              text-muted-theme
+              surface-hover-theme
               rounded-xl
               p-2
-              text-slate-500
               transition
-              hover:bg-slate-100
             "
           >
             <X size={20} />
           </button>
         </div>
 
-        {/* Scrollable Body */}
+        {/* Body */}
 
         <form
           onSubmit={handleSubmit}
@@ -143,10 +136,11 @@ const AddTaskModal = ({ isOpen, onClose }) => {
           "
         >
           <div className="space-y-6">
+
             {/* Title */}
 
             <div>
-              <label className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-700">
+              <label className="text-theme mb-2 flex items-center gap-2 text-sm font-medium">
                 <PlusCircle size={16} />
                 Task Title
               </label>
@@ -156,29 +150,32 @@ const AddTaskModal = ({ isOpen, onClose }) => {
                 placeholder="Enter task title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                required
                 className="
+                  surface-theme
+                  border-theme
+                  text-theme
                   w-full
                   rounded-xl
-                  sm:rounded-2xl
                   border
-                  border-slate-300
                   px-4
                   py-3
                   text-sm
                   outline-none
                   transition
-                  focus:border-slate-900
+                  placeholder:text-gray-400
+                  focus:border-[var(--primary)]
                   focus:ring-4
-                  focus:ring-slate-100
+                  focus:ring-[color:var(--shadow)]
+                  sm:rounded-2xl
                 "
-                required
               />
             </div>
 
             {/* Description */}
 
             <div>
-              <label className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-700">
+              <label className="text-theme mb-2 flex items-center gap-2 text-sm font-medium">
                 <FileText size={16} />
                 Description
               </label>
@@ -189,29 +186,33 @@ const AddTaskModal = ({ isOpen, onClose }) => {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 className="
+                  surface-theme
+                  border-theme
+                  text-theme
                   w-full
                   resize-none
                   rounded-xl
-                  sm:rounded-2xl
                   border
-                  border-slate-300
                   px-4
                   py-3
                   text-sm
                   outline-none
                   transition
-                  focus:border-slate-900
+                  placeholder:text-gray-400
+                  focus:border-[var(--primary)]
                   focus:ring-4
-                  focus:ring-slate-100
+                  focus:ring-[color:var(--shadow)]
+                  sm:rounded-2xl
                 "
               />
             </div>
 
-            {/* Category + Date */}
+            {/* Category & Date */}
 
             <div className="grid gap-5 md:grid-cols-2">
+
               <div>
-                <label className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-700">
+                <label className="text-theme mb-2 flex items-center gap-2 text-sm font-medium">
                   <FolderOpen size={16} />
                   Category
                 </label>
@@ -220,19 +221,21 @@ const AddTaskModal = ({ isOpen, onClose }) => {
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                   className="
+                    surface-theme
+                    border-theme
+                    text-theme
                     w-full
                     rounded-xl
-                    sm:rounded-2xl
                     border
-                    border-slate-300
                     px-4
                     py-3
                     text-sm
                     outline-none
                     transition
-                    focus:border-slate-900
+                    focus:border-[var(--primary)]
                     focus:ring-4
-                    focus:ring-slate-100
+                    focus:ring-[color:var(--shadow)]
+                    sm:rounded-2xl
                   "
                 >
                   <option>Work</option>
@@ -242,7 +245,7 @@ const AddTaskModal = ({ isOpen, onClose }) => {
               </div>
 
               <div>
-                <label className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-700">
+                <label className="text-theme mb-2 flex items-center gap-2 text-sm font-medium">
                   <Calendar size={16} />
                   Due Date
                 </label>
@@ -252,22 +255,25 @@ const AddTaskModal = ({ isOpen, onClose }) => {
                   value={dueDate}
                   onChange={(e) => setDueDate(e.target.value)}
                   className="
+                    surface-theme
+                    border-theme
+                    text-theme
                     w-full
                     rounded-xl
-                    sm:rounded-2xl
                     border
-                    border-slate-300
                     px-4
                     py-3
                     text-sm
                     outline-none
                     transition
-                    focus:border-slate-900
+                    focus:border-[var(--primary)]
                     focus:ring-4
-                    focus:ring-slate-100
+                    focus:ring-[color:var(--shadow)]
+                    sm:rounded-2xl
                   "
                 />
               </div>
+
             </div>
           </div>
 
@@ -275,14 +281,13 @@ const AddTaskModal = ({ isOpen, onClose }) => {
 
           <div
             className="
+              border-theme
               mt-8
               flex
               flex-col-reverse
               gap-3
               border-t
-              border-slate-200
               pt-6
-
               sm:flex-row
               sm:justify-end
             "
@@ -292,17 +297,17 @@ const AddTaskModal = ({ isOpen, onClose }) => {
               onClick={onClose}
               disabled={loading}
               className="
+                surface-theme
+                surface-hover-theme
+                border-theme
+                text-theme
                 w-full
                 rounded-xl
                 border
-                border-slate-300
                 px-6
                 py-3
                 font-medium
-                text-slate-700
                 transition
-                hover:bg-slate-100
-
                 sm:w-auto
               "
             >
@@ -313,22 +318,20 @@ const AddTaskModal = ({ isOpen, onClose }) => {
               type="submit"
               disabled={loading}
               className="
+                primary-theme
                 flex
                 w-full
                 items-center
                 justify-center
                 gap-2
                 rounded-xl
-                bg-slate-900
                 px-6
                 py-3
                 font-medium
-                text-white
                 transition
-                hover:bg-black
+                hover:opacity-90
                 disabled:cursor-not-allowed
-                disabled:opacity-70
-
+                disabled:opacity-60
                 sm:w-auto
               "
             >

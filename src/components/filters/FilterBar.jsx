@@ -23,27 +23,26 @@ const FilterBar = ({ filters, setFilters }) => {
         mb-6
         rounded-3xl
         border
-        border-slate-200
-        bg-white
         p-4
         shadow-sm
 
         sm:p-5
         lg:p-6
       "
+      style={{
+        background: "var(--card)",
+        borderColor: "var(--border)",
+      }}
     >
       {/* Search */}
 
       <div className="relative mb-5">
         <Search
           size={18}
-          className="
-            absolute
-            left-4
-            top-1/2
-            -translate-y-1/2
-            text-slate-400
-          "
+          className="absolute left-4 top-1/2 -translate-y-1/2"
+          style={{
+            color: "var(--text-muted)",
+          }}
         />
 
         <input
@@ -57,8 +56,6 @@ const FilterBar = ({ filters, setFilters }) => {
             w-full
             rounded-2xl
             border
-            border-slate-200
-            bg-slate-50
             py-3
             pl-11
             pr-4
@@ -66,14 +63,23 @@ const FilterBar = ({ filters, setFilters }) => {
             outline-none
             transition-all
             duration-200
-
-            placeholder:text-slate-400
-
-            focus:border-slate-900
-            focus:bg-white
-            focus:ring-4
-            focus:ring-slate-100
           "
+          style={{
+            background: "var(--surface)",
+            borderColor: "var(--border)",
+            color: "var(--text)",
+          }}
+          onFocus={(e) => {
+            e.target.style.background = "var(--card)";
+            e.target.style.borderColor = "var(--primary)";
+            e.target.style.boxShadow =
+              "0 0 0 4px var(--surface)";
+          }}
+          onBlur={(e) => {
+            e.target.style.background = "var(--surface)";
+            e.target.style.borderColor = "var(--border)";
+            e.target.style.boxShadow = "none";
+          }}
         />
       </div>
 
@@ -86,7 +92,6 @@ const FilterBar = ({ filters, setFilters }) => {
           gap-3
 
           sm:grid-cols-2
-
           xl:grid-cols-4
         "
       >
@@ -101,18 +106,26 @@ const FilterBar = ({ filters, setFilters }) => {
             w-full
             rounded-2xl
             border
-            border-slate-200
-            bg-white
             px-4
             py-3
             text-sm
             outline-none
             transition-all
-
-            focus:border-slate-900
-            focus:ring-4
-            focus:ring-slate-100
           "
+          style={{
+            background: "var(--card)",
+            borderColor: "var(--border)",
+            color: "var(--text)",
+          }}
+          onFocus={(e) => {
+            e.target.style.borderColor = "var(--primary)";
+            e.target.style.boxShadow =
+              "0 0 0 4px var(--surface)";
+          }}
+          onBlur={(e) => {
+            e.target.style.borderColor = "var(--border)";
+            e.target.style.boxShadow = "none";
+          }}
         >
           <option value="">All Status</option>
           <option value="todo">Todo</option>
@@ -131,18 +144,26 @@ const FilterBar = ({ filters, setFilters }) => {
             w-full
             rounded-2xl
             border
-            border-slate-200
-            bg-white
             px-4
             py-3
             text-sm
             outline-none
             transition-all
-
-            focus:border-slate-900
-            focus:ring-4
-            focus:ring-slate-100
           "
+          style={{
+            background: "var(--card)",
+            borderColor: "var(--border)",
+            color: "var(--text)",
+          }}
+          onFocus={(e) => {
+            e.target.style.borderColor = "var(--primary)";
+            e.target.style.boxShadow =
+              "0 0 0 4px var(--surface)";
+          }}
+          onBlur={(e) => {
+            e.target.style.borderColor = "var(--border)";
+            e.target.style.boxShadow = "none";
+          }}
         >
           <option value="">All Priorities</option>
           <option value="low">Low</option>
@@ -161,18 +182,26 @@ const FilterBar = ({ filters, setFilters }) => {
             w-full
             rounded-2xl
             border
-            border-slate-200
-            bg-white
             px-4
             py-3
             text-sm
             outline-none
             transition-all
-
-            focus:border-slate-900
-            focus:ring-4
-            focus:ring-slate-100
           "
+          style={{
+            background: "var(--card)",
+            borderColor: "var(--border)",
+            color: "var(--text)",
+          }}
+          onFocus={(e) => {
+            e.target.style.borderColor = "var(--primary)";
+            e.target.style.boxShadow =
+              "0 0 0 4px var(--surface)";
+          }}
+          onBlur={(e) => {
+            e.target.style.borderColor = "var(--border)";
+            e.target.style.boxShadow = "none";
+          }}
         >
           <option value="">All Dates</option>
           <option value="overdue">Overdue</option>
@@ -190,25 +219,29 @@ const FilterBar = ({ filters, setFilters }) => {
             items-center
             justify-center
             gap-2
-
             rounded-2xl
             border
-            border-slate-200
-            bg-slate-50
-
             px-4
             py-3
-
             text-sm
             font-medium
-            text-slate-700
-
             transition-all
             duration-200
-
-            hover:bg-slate-100
             active:scale-[0.98]
           "
+          style={{
+            background: "var(--surface)",
+            borderColor: "var(--border)",
+            color: "var(--text)",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background =
+              "var(--surface-hover)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background =
+              "var(--surface)";
+          }}
         >
           <RotateCcw size={18} />
           Reset Filters

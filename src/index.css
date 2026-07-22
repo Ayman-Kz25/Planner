@@ -1,8 +1,224 @@
-@import 'tailwindcss';
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 * {
-    @apply box-border;
-    font-family: "Poppins", sans-serif;
-    scrollbar-width: none;
+  @apply box-border;
+  font-family: "Poppins", sans-serif;
+  scrollbar-width: none;
+}
+
+:root {
+  --success: #22c55e;
+  --success-bg: #dcfce7;
+
+  --warning: #f59e0b;
+  --warning-bg: #fef3c7;
+
+  --danger: #ef4444;
+  --danger-bg: #fee2e2;
+
+  --info: #3b82f6;
+  --info-bg: #dbeafe;
+}
+
+/* =========================================
+   LIGHT
+========================================= */
+
+.theme-light {
+  --bg: #f8fafc;
+  --card: #ffffff;
+
+  --text: #0f172a;
+  --text-muted: #64748b;
+
+  --border: #e2e8f0;
+
+  --primary: #0f172a;
+  --primary-text: #ffffff;
+
+  --surface: #f1f5f9;
+  --surface-hover: #e2e8f0;
+
+  --success: #16a34a;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+
+  --shadow: rgba(15, 23, 42, 0.08);
+}
+
+/* =========================================
+   DARK
+========================================= */
+
+.theme-dark {
+  --bg: #020617;
+  --card: #1e293b;
+
+  --text: #f8fafc;
+  --text-muted: #94a3b8;
+
+  --border: #334155;
+
+  --primary: #ffffff;
+  --primary-text: #0f172a;
+
+  --surface: #334155;
+  --surface-hover: #475569;
+
+  --success: #22c55e;
+  --warning: #fbbf24;
+  --danger: #f87171;
+
+  --shadow: rgba(0, 0, 0, 0.35);
+}
+
+/* =========================================
+   OCEAN
+========================================= */
+
+.theme-ocean {
+  --bg: #eff6ff;
+  --card: #ffffff;
+
+  --text: #0c4a6e;
+  --text-muted: #0369a1;
+
+  --border: #bae6fd;
+
+  --primary: #0284c7;
+  --primary-text: #ffffff;
+
+  --surface: #dbeafe;
+  --surface-hover: #bfdbfe;
+
+  --success: #0f766e;
+  --warning: #f59e0b;
+  --danger: #dc2626;
+
+  --shadow: rgba(2, 132, 199, 0.12);
+}
+
+/* =========================================
+   FOREST
+========================================= */
+
+.theme-forest {
+  --bg: #f0fdf4;
+  --card: #ffffff;
+
+  --text: #14532d;
+  --text-muted: #15803d;
+
+  --border: #bbf7d0;
+
+  --primary: #15803d;
+  --primary-text: #ffffff;
+
+  --surface: #dcfce7;
+  --surface-hover: #bbf7d0;
+
+  --success: #15803d;
+  --warning: #ca8a04;
+  --danger: #dc2626;
+
+  --shadow: rgba(21, 128, 61, 0.12);
+}
+
+/* =========================================
+   ROSE
+========================================= */
+
+.theme-rose {
+  --bg: #fff1f2;
+  --card: #ffffff;
+
+  --text: #881337;
+  --text-muted: #be123c;
+
+  --border: #fecdd3;
+
+  --primary: #e11d48;
+  --primary-text: #ffffff;
+
+  --surface: #ffe4e6;
+  --surface-hover: #fecdd3;
+
+  --success: #16a34a;
+  --warning: #f59e0b;
+  --danger: #dc2626;
+
+  --shadow: rgba(225, 29, 72, 0.12);
+}
+
+@layer utilities {
+  .bg-theme {
+    background: var(--bg);
+  }
+
+  .card-theme {
+    background: var(--card);
+  }
+
+  .text-theme {
+    color: var(--text);
+  }
+
+  .text-muted-theme {
+    color: var(--text-muted);
+  }
+
+
+  .border-theme {
+    border-color: var(--border);
+  }
+
+  .surface-theme {
+    background: var(--surface);
+  }
+
+  .surface-hover-theme:hover {
+    background: var(--surface-hover);
+  }
+
+  .primary-theme {
+    background: var(--primary);
+    color: var(--primary-text);
+  }
+
+  .shadow-theme {
+    box-shadow: 0 8px 24px var(--shadow);
+  }
+
+  .focus-ring-theme:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--surface);
+}
+
+.icon-surface-theme {
+  background: var(--surface);
+  color: var(--text);
+}
+}
+
+@layer utilities {
+  .bg-primary-theme {
+    background: var(--primary);
+  }
+
+  .text-primary-theme {
+    color: var(--primary);
+  }
+
+  .text-on-primary-theme {
+    color: var(--primary-text);
+  }
+
+  .bg-on-primary-theme {
+    background: var(--primary-text);
+  }
+
+  .surface-2-theme {
+    background: color-mix(in srgb, var(--surface) 70%, transparent);
+  }
 }

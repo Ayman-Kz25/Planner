@@ -38,32 +38,30 @@ const CategoryPage = () => {
     return tasks.filter((task) => {
       let pass = true;
 
-      // Category
       pass =
         pass &&
-        task.category?.toLowerCase() === category?.toLowerCase();
+        task.category?.toLowerCase() ===
+          category?.toLowerCase();
 
-      // Search
       if (filters.search) {
         const search = filters.search.toLowerCase();
 
         pass =
           pass &&
           (task.title.toLowerCase().includes(search) ||
-            task.description?.toLowerCase().includes(search));
+            task.description
+              ?.toLowerCase()
+              .includes(search));
       }
 
-      // Status
       if (filters.status) {
         pass = pass && task.status === filters.status;
       }
 
-      // Priority
       if (filters.priority) {
         pass = pass && task.priority === filters.priority;
       }
 
-      // Due Date
       if (filters.due) {
         if (!task.dueDate) return false;
 
@@ -95,19 +93,28 @@ const CategoryPage = () => {
   }, [tasks, category, filters]);
 
   const categoryName =
-    category?.charAt(0).toUpperCase() + category?.slice(1);
+    category?.charAt(0).toUpperCase() +
+    category?.slice(1);
 
   return (
     <div className="space-y-8">
       {/* Hero */}
 
       <section>
-        <h1 className="text-3xl font-bold text-slate-900">
+        <h1
+          className="text-3xl font-bold"
+          style={{ color: "var(--text)" }}
+        >
           {categoryName}
         </h1>
 
-        <p className="mt-2 text-slate-500">
-          Manage all of your {categoryName?.toLowerCase()} tasks in one place.
+        <p
+          className="mt-2"
+          style={{ color: "var(--text-muted)" }}
+        >
+          Manage all of your{" "}
+          {categoryName?.toLowerCase()} tasks in one
+          place.
         </p>
       </section>
 
@@ -115,36 +122,39 @@ const CategoryPage = () => {
 
       <section>
         <div
-          className="
-            max-w-sm
-            rounded-3xl
-            border
-            border-slate-200
-            bg-white
-            p-6
-            shadow-sm
-            transition
-            hover:shadow-md
-          "
+          className="max-w-sm rounded-3xl border p-6 shadow-sm transition hover:shadow-md"
+          style={{
+            background: "var(--card)",
+            borderColor: "var(--border)",
+          }}
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-500">
+              <p
+                className="text-sm"
+                style={{
+                  color: "var(--text-muted)",
+                }}
+              >
                 {categoryName} Tasks
               </p>
 
-              <h2 className="mt-2 text-4xl font-bold text-slate-900">
+              <h2
+                className="mt-2 text-4xl font-bold"
+                style={{
+                  color: "var(--text)",
+                }}
+              >
                 {filteredTasks.length}
               </h2>
             </div>
 
             <div
-              className="
-                rounded-2xl
-                bg-violet-100
-                p-4
-                text-violet-600
-              "
+              className="rounded-2xl p-4"
+              style={{
+                background: "var(--surface)",
+                color: "var(--primary)",
+              }}
             >
               <FolderOpen size={28} />
             </div>
@@ -163,22 +173,24 @@ const CategoryPage = () => {
 
       <section>
         <div className="mb-5 flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-slate-900">
+          <h2
+            className="text-xl font-semibold"
+            style={{ color: "var(--text)" }}
+          >
             {categoryName} Tasks
           </h2>
 
           <span
-            className="
-              rounded-full
-              bg-slate-100
-              px-3
-              py-1
-              text-sm
-              text-slate-600
-            "
+            className="rounded-full px-3 py-1 text-sm"
+            style={{
+              background: "var(--surface)",
+              color: "var(--text-muted)",
+            }}
           >
             {filteredTasks.length}{" "}
-            {filteredTasks.length === 1 ? "Task" : "Tasks"}
+            {filteredTasks.length === 1
+              ? "Task"
+              : "Tasks"}
           </span>
         </div>
 

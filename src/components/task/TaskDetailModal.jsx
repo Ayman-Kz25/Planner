@@ -9,15 +9,17 @@ import {
 } from "lucide-react";
 
 const statusStyles = {
-  todo: "bg-slate-100 text-slate-700",
-  "in-progress": "bg-amber-100 text-amber-700",
-  completed: "bg-emerald-100 text-emerald-700",
+  todo: "surface-theme text-muted-theme",
+  "in-progress":
+    "bg-[var(--warning-bg)] text-[var(--warning)]",
+  completed:
+    "bg-[var(--success-bg)] text-[var(--success)]",
 };
 
 const priorityStyles = {
-  low: "bg-emerald-100 text-emerald-700",
-  medium: "bg-yellow-100 text-yellow-700",
-  high: "bg-rose-100 text-rose-700",
+  low: "bg-[var(--success-bg)] text-[var(--success)]",
+  medium: "bg-[var(--warning-bg)] text-[var(--warning)]",
+  high: "bg-[var(--danger-bg)] text-[var(--danger)]",
 };
 
 const TaskDetailModal = ({ task, onClose }) => {
@@ -34,13 +36,16 @@ const TaskDetailModal = ({ task, onClose }) => {
       className="
         fixed inset-0 z-[9999]
         flex items-center justify-center
-        bg-slate-900/50
+        bg-black/50
         backdrop-blur-sm
         p-3 sm:p-5
       "
     >
       <div
         className="
+          card-theme
+          shadow-theme
+          border-theme
           flex
           max-h-[92vh]
           w-full
@@ -50,19 +55,16 @@ const TaskDetailModal = ({ task, onClose }) => {
           rounded-2xl
           sm:rounded-3xl
           border
-          border-slate-200
-          bg-white
-          shadow-2xl
         "
       >
         {/* Header */}
 
         <div
           className="
+            border-theme
             flex items-start justify-between
             gap-4
             border-b
-            border-slate-200
             px-5
             py-5
             sm:px-8
@@ -71,17 +73,17 @@ const TaskDetailModal = ({ task, onClose }) => {
           <div className="min-w-0">
             <h2
               className="
+                text-theme
                 break-words
                 text-xl
                 font-bold
-                text-slate-900
                 sm:text-2xl
               "
             >
               {task.title}
             </h2>
 
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="text-muted-theme mt-1 text-sm">
               Task Details
             </p>
           </div>
@@ -89,11 +91,11 @@ const TaskDetailModal = ({ task, onClose }) => {
           <button
             onClick={onClose}
             className="
+              text-muted-theme
+              surface-hover-theme
               rounded-xl
               p-2
-              text-slate-500
               transition
-              hover:bg-slate-100
             "
           >
             <X size={20} />
@@ -118,22 +120,22 @@ const TaskDetailModal = ({ task, onClose }) => {
               <div className="mb-3 flex items-center gap-2">
                 <FileText
                   size={18}
-                  className="text-slate-500"
+                  className="text-muted-theme"
                 />
 
-                <h3 className="font-semibold text-slate-900">
+                <h3 className="text-theme font-semibold">
                   Description
                 </h3>
               </div>
 
               <div
                 className="
+                  surface-theme
+                  text-muted-theme
                   rounded-2xl
-                  bg-slate-50
                   p-4
                   text-sm
                   leading-6
-                  text-slate-600
                 "
               >
                 {task.description || "No description provided."}
@@ -146,8 +148,15 @@ const TaskDetailModal = ({ task, onClose }) => {
 
               {/* Category */}
 
-              <div className="rounded-2xl border border-slate-200 p-5">
-                <div className="mb-3 flex items-center gap-2 text-slate-500">
+              <div
+                className="
+                  border-theme
+                  rounded-2xl
+                  border
+                  p-5
+                "
+              >
+                <div className="text-muted-theme mb-3 flex items-center gap-2">
                   <FolderKanban size={18} />
 
                   <span className="text-sm font-medium">
@@ -155,15 +164,22 @@ const TaskDetailModal = ({ task, onClose }) => {
                   </span>
                 </div>
 
-                <p className="font-semibold text-slate-900">
+                <p className="text-theme font-semibold">
                   {task.category}
                 </p>
               </div>
 
               {/* Status */}
 
-              <div className="rounded-2xl border border-slate-200 p-5">
-                <div className="mb-3 flex items-center gap-2 text-slate-500">
+              <div
+                className="
+                  border-theme
+                  rounded-2xl
+                  border
+                  p-5
+                "
+              >
+                <div className="text-muted-theme mb-3 flex items-center gap-2">
                   <CheckCircle2 size={18} />
 
                   <span className="text-sm font-medium">
@@ -188,8 +204,15 @@ const TaskDetailModal = ({ task, onClose }) => {
 
               {/* Priority */}
 
-              <div className="rounded-2xl border border-slate-200 p-5">
-                <div className="mb-3 flex items-center gap-2 text-slate-500">
+              <div
+                className="
+                  border-theme
+                  rounded-2xl
+                  border
+                  p-5
+                "
+              >
+                <div className="text-muted-theme mb-3 flex items-center gap-2">
                   <Flag size={18} />
 
                   <span className="text-sm font-medium">
@@ -212,14 +235,24 @@ const TaskDetailModal = ({ task, onClose }) => {
                     }
                   `}
                 >
-                  {task.priority || "Medium"}
+                  {(task.priority || "Medium")
+                    .charAt(0)
+                    .toUpperCase() +
+                    (task.priority || "Medium").slice(1)}
                 </span>
               </div>
 
               {/* Due Date */}
 
-              <div className="rounded-2xl border border-slate-200 p-5">
-                <div className="mb-3 flex items-center gap-2 text-slate-500">
+              <div
+                className="
+                  border-theme
+                  rounded-2xl
+                  border
+                  p-5
+                "
+              >
+                <div className="text-muted-theme mb-3 flex items-center gap-2">
                   <CalendarDays size={18} />
 
                   <span className="text-sm font-medium">
@@ -227,7 +260,7 @@ const TaskDetailModal = ({ task, onClose }) => {
                   </span>
                 </div>
 
-                <p className="font-semibold text-slate-900">
+                <p className="text-theme font-semibold">
                   {dueDate
                     ? format(dueDate, "MMM dd, yyyy")
                     : "No due date"}

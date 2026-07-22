@@ -11,6 +11,10 @@ import RegisterPage from "./pages/RegisterPage";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ScrollToTop from "./components/ui/ScrollToTop";
+import AccountPage from "./pages/AccountPage";
+import ThemePage from "./pages/ThemePage";
+import SettingsPage from "./pages/SettingsPage";
+import "./index.css";
 
 const App = () => {
   return (
@@ -35,6 +39,9 @@ const App = () => {
           <Route path="completed" element={<CompletedPage />} />
           <Route path="calendar" element={<CalendarPage />} />
           <Route path="category/:category" element={<CategoryPage />} />
+          <Route path="account" element={<AccountPage />} />
+          <Route path="theme" element={<ThemePage />} />
+          <Route path="settings" element={<SettingsPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

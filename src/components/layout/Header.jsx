@@ -21,44 +21,33 @@ const Header = ({ onToggleSidebar }) => {
   return (
     <>
       <header
-        className="
-          sticky top-0 z-40
-          bg-slate-100/70
-          backdrop-blur-xl
-          px-3 pt-3 pb-2
-          sm:px-4 sm:pt-4
-        "
+        className="sticky top-0 z-40 px-3 pt-3 pb-2 sm:px-4 sm:pt-4 backdrop-blur-xl"
+        style={{
+          background: "color-mix(in srgb, var(--bg) 75%, transparent)",
+        }}
       >
         <div
-          className="
-            mx-auto
-            flex
-            h-16
-            items-center
-            justify-between
-            rounded-2xl
-            border border-white/70
-            bg-white/80
-            px-4
-            shadow-sm
-            backdrop-blur-xl
-
-            sm:h-[72px]
-            sm:px-6
-          "
+          className="mx-auto flex h-16 items-center justify-between rounded-2xl border px-4 shadow-sm backdrop-blur-xl sm:h-[72px] sm:px-6"
+          style={{
+            background: "color-mix(in srgb, var(--card) 88%, transparent)",
+            borderColor: "var(--border)",
+          }}
         >
           {/* Left */}
 
           <div className="flex min-w-0 items-center gap-3 sm:gap-4">
             <button
               onClick={onToggleSidebar}
-              className="
-                rounded-xl
-                p-2
-                transition
-                hover:bg-slate-100
-                md:hidden
-              "
+              className="rounded-xl p-2 transition md:hidden"
+              style={{
+                color: "var(--text)",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.background = "var(--surface)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.background = "transparent")
+              }
             >
               <Menu size={22} />
             </button>
@@ -66,25 +55,11 @@ const Header = ({ onToggleSidebar }) => {
             {/* Logo */}
 
             <div
-              className="
-                flex
-                h-10
-                w-10
-                shrink-0
-                items-center
-                justify-center
-                rounded-2xl
-                bg-gradient-to-br
-                from-rose-300
-                to-rose-500
-                text-base
-                font-bold
-                text-white
-                shadow-sm
-
-                sm:h-11
-                sm:w-11
-              "
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl text-base font-bold shadow-sm sm:h-11 sm:w-11"
+              style={{
+                background: "var(--primary)",
+                color: "var(--primary-text)",
+              }}
             >
               P
             </div>
@@ -93,22 +68,20 @@ const Header = ({ onToggleSidebar }) => {
 
             <div className="min-w-0">
               <h1
-                className="
-                  truncate
-                  text-xl
-                  font-semibold
-                  tracking-tight
-                  text-slate-900
-
-                  sm:text-2xl
-                  hidden
-                  sm:flex
-                "
+                className="hidden truncate text-xl font-semibold tracking-tight sm:flex sm:text-2xl"
+                style={{
+                  color: "var(--text)",
+                }}
               >
                 Planner
               </h1>
 
-              <p className="hidden truncate text-sm text-slate-500 sm:block">
+              <p
+                className="hidden truncate text-sm sm:block"
+                style={{
+                  color: "var(--text-muted)",
+                }}
+              >
                 Welcome back, {user?.displayName?.split(" ")[0] || "there"}.
               </p>
             </div>
@@ -120,23 +93,24 @@ const Header = ({ onToggleSidebar }) => {
             {/* Date */}
 
             <div
-              className="
-                hidden
-                items-center
-                gap-2
-                rounded-xl
-                bg-slate-100
-                px-4
-                py-2
-                lg:flex
-              "
+              className="hidden items-center gap-2 rounded-xl px-4 py-2 lg:flex"
+              style={{
+                background: "var(--surface)",
+              }}
             >
               <CalendarDays
                 size={17}
-                className="text-slate-500"
+                style={{
+                  color: "var(--text-muted)",
+                }}
               />
 
-              <span className="text-sm font-medium text-slate-600">
+              <span
+                className="text-sm font-medium"
+                style={{
+                  color: "var(--text-muted)",
+                }}
+              >
                 {today}
               </span>
             </div>
@@ -145,28 +119,11 @@ const Header = ({ onToggleSidebar }) => {
 
             <button
               onClick={() => setIsAddModalOpen(true)}
-              className="
-                flex
-                items-center
-                justify-center
-                gap-2
-                rounded-xl
-                bg-slate-900
-                px-3
-                py-2.5
-                text-sm
-                font-medium
-                text-white
-                transition-all
-                duration-200
-
-                hover:scale-[1.02]
-                hover:bg-black
-                active:scale-95
-
-                sm:px-5
-                sm:py-3
-              "
+              className="flex items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200 hover:scale-[1.02] active:scale-95 sm:px-5 sm:py-3"
+              style={{
+                background: "var(--primary)",
+                color: "var(--primary-text)",
+              }}
             >
               <Plus size={18} />
 

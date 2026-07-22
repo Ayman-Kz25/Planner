@@ -72,11 +72,17 @@ const DashboardPage = () => {
         }
 
         if (filters.due === "overdue") {
-          pass = pass && isPast(due) && task.status !== "completed";
+          pass =
+            pass &&
+            isPast(due) &&
+            task.status !== "completed";
         }
 
         if (filters.due === "upcoming") {
-          pass = pass && !isPast(due) && !isToday(due);
+          pass =
+            pass &&
+            !isPast(due) &&
+            !isToday(due);
         }
       }
 
@@ -87,9 +93,15 @@ const DashboardPage = () => {
   const stats = useMemo(
     () => ({
       total: tasks.length,
-      todo: tasks.filter((t) => t.status === "todo").length,
-      progress: tasks.filter((t) => t.status === "in-progress").length,
-      completed: tasks.filter((t) => t.status === "completed").length,
+      todo: tasks.filter(
+        (t) => t.status === "todo"
+      ).length,
+      progress: tasks.filter(
+        (t) => t.status === "in-progress"
+      ).length,
+      completed: tasks.filter(
+        (t) => t.status === "completed"
+      ).length,
     }),
     [tasks]
   );
@@ -119,14 +131,16 @@ const DashboardPage = () => {
 
   return (
     <div className="space-y-8">
+
       {/* Hero */}
 
       <section>
-        <h1 className="text-3xl font-bold text-slate-900">
-          Welcome back, {user?.displayName?.split(" ")[0] || "there"}
+        <h1 className="text-theme text-3xl font-bold">
+          Welcome back,{" "}
+          {user?.displayName?.split(" ")[0] || "there"}
         </h1>
 
-        <p className="mt-2 text-slate-500">
+        <p className="text-muted-theme mt-2">
           Stay organized and finish today's priorities.
         </p>
       </section>
@@ -140,22 +154,42 @@ const DashboardPage = () => {
           return (
             <div
               key={card.title}
-              className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-md"
+              className="
+                card-theme
+                border
+                border-theme
+                rounded-3xl
+                p-6
+                shadow-theme
+                transition-all
+                duration-300
+                hover:-translate-y-1
+                hover:shadow-lg
+              "
             >
               <div className="flex items-center justify-between">
+
                 <div>
-                  <p className="text-sm text-slate-500">
+                  <p className="text-muted-theme text-sm">
                     {card.title}
                   </p>
 
-                  <h2 className="mt-2 text-3xl font-bold text-slate-900">
+                  <h2 className="text-theme mt-2 text-3xl font-bold">
                     {card.value}
                   </h2>
                 </div>
 
-                <div className="rounded-2xl bg-slate-100 p-3 text-slate-700">
+                <div
+                  className="
+                    surface-theme
+                    text-theme
+                    rounded-2xl
+                    p-3
+                  "
+                >
                   <Icon size={24} />
                 </div>
+
               </div>
             </div>
           );
@@ -172,15 +206,29 @@ const DashboardPage = () => {
       {/* Tasks */}
 
       <section>
+
         <div className="mb-5 flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-slate-900">
+
+          <h2 className="text-theme text-xl font-semibold">
             Tasks
           </h2>
 
-          <span className="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-600">
+          <span
+            className="
+              surface-theme
+              text-muted-theme
+              rounded-full
+              px-3
+              py-1
+              text-sm
+            "
+          >
             {filteredTasks.length}{" "}
-            {filteredTasks.length === 1 ? "Task" : "Tasks"}
+            {filteredTasks.length === 1
+              ? "Task"
+              : "Tasks"}
           </span>
+
         </div>
 
         {filteredTasks.length ? (
@@ -195,6 +243,7 @@ const DashboardPage = () => {
             description="Try changing your filters or create a new task."
           />
         )}
+
       </section>
 
       {/* Modals */}

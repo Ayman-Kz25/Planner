@@ -14,25 +14,25 @@ import { format, isPast, isToday, isValid } from "date-fns";
 const statusStyles = {
   todo: {
     label: "Todo",
-    className: "bg-slate-100 text-slate-700",
+    className: "surface-theme text-muted-theme",
     icon: Circle,
   },
   "in-progress": {
     label: "In Progress",
-    className: "bg-amber-100 text-amber-700",
+    className: "bg-[var(--warning-bg)] text-[var(--warning)]",
     icon: Clock3,
   },
   completed: {
     label: "Completed",
-    className: "bg-emerald-100 text-emerald-700",
+    className: "bg-[var(--success-bg)] text-[var(--success)]",
     icon: CheckCircle2,
   },
 };
 
 const priorityStyles = {
-  low: "bg-emerald-100 text-emerald-700",
-  medium: "bg-yellow-100 text-yellow-700",
-  high: "bg-rose-100 text-rose-700",
+  low: "bg-[var(--success-bg)] text-[var(--success)]",
+  medium: "bg-[var(--warning-bg)] text-[var(--warning)]",
+  high: "bg-[var(--danger-bg)] text-[var(--danger)]",
 };
 
 const TaskCard = ({
@@ -54,23 +54,22 @@ const TaskCard = ({
   }
 
   let dueLabel = "";
-  let dueColor = "text-slate-500";
+  let dueColor = "text-muted-theme";
 
   if (dueDate) {
     if (isPast(dueDate) && task.status !== "completed") {
       dueLabel = "Overdue";
-      dueColor = "text-rose-600";
+      dueColor = "text-[var(--danger)]";
     } else if (isToday(dueDate)) {
       dueLabel = "Due Today";
-      dueColor = "text-amber-600";
+      dueColor = "text-[var(--warning)]";
     } else {
       dueLabel = format(dueDate, "MMM dd, yyyy");
     }
   }
 
   const status =
-    statusStyles[task.status] ||
-    statusStyles.todo;
+    statusStyles[task.status] || statusStyles.todo;
 
   const StatusIcon = status.icon;
 
@@ -80,15 +79,18 @@ const TaskCard = ({
       className="
         group
         cursor-pointer
-        rounded-2xl sm:rounded-3xl
-        border border-slate-200
-        bg-white
-        p-4 sm:p-5 lg:p-6
-        shadow-sm
+        rounded-2xl
+        sm:rounded-3xl
+        border-theme
+        card-theme
+        shadow-theme
+        border
+        p-4
+        sm:p-5
+        lg:p-6
         transition-all
         duration-300
         hover:-translate-y-1
-        hover:shadow-lg
       "
     >
       {/* Header */}
@@ -97,10 +99,10 @@ const TaskCard = ({
         <div className="min-w-0 flex-1">
           <h3
             className="
+              text-theme
               break-words
               text-lg
               font-semibold
-              text-slate-900
               sm:text-xl
             "
           >
@@ -110,11 +112,11 @@ const TaskCard = ({
           {task.description && (
             <p
               className="
+                text-muted-theme
                 mt-2
                 line-clamp-2
                 text-sm
                 leading-6
-                text-slate-500
               "
             >
               {task.description}
@@ -143,9 +145,8 @@ const TaskCard = ({
 
       {/* Category */}
 
-      <div className="mt-5 flex items-center gap-2 text-sm text-slate-600">
+      <div className="text-muted-theme mt-5 flex items-center gap-2 text-sm">
         <FolderOpen size={16} />
-
         <span className="truncate">{task.category}</span>
       </div>
 
@@ -162,8 +163,6 @@ const TaskCard = ({
           lg:justify-between
         "
       >
-        {/* Left */}
-
         <div className="space-y-3">
           {dueDate && (
             <div
@@ -173,7 +172,6 @@ const TaskCard = ({
                 size={16}
                 className="shrink-0"
               />
-
               <span>{dueLabel}</span>
             </div>
           )}
@@ -220,6 +218,10 @@ const TaskCard = ({
           <button
             onClick={() => onEdit?.(task)}
             className="
+              surface-theme
+              surface-hover-theme
+              text-theme
+              border-theme
               flex
               w-full
               items-center
@@ -227,13 +229,11 @@ const TaskCard = ({
               gap-2
               rounded-xl
               border
-              border-slate-200
               px-4
               py-2.5
               text-sm
               font-medium
               transition
-              hover:bg-slate-100
               sm:w-auto
             "
           >
@@ -250,14 +250,14 @@ const TaskCard = ({
               justify-center
               gap-2
               rounded-xl
-              bg-rose-500
+              bg-[var(--danger)]
               px-4
               py-2.5
               text-sm
               font-medium
               text-white
               transition
-              hover:bg-rose-600
+              hover:opacity-90
               sm:w-auto
             "
           >

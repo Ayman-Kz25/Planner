@@ -77,7 +77,7 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
       className="
         fixed inset-0 z-[9999]
         flex items-center justify-center
-        bg-slate-900/50
+        bg-black/50
         backdrop-blur-sm
         p-3 sm:p-5
       "
@@ -93,9 +93,9 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
           rounded-2xl
           sm:rounded-3xl
           border
-          border-slate-200
-          bg-white
-          shadow-2xl
+          border-theme
+          card-theme
+          shadow-theme
         "
       >
         {/* Header */}
@@ -105,25 +105,18 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
             flex items-start justify-between
             gap-4
             border-b
-            border-slate-200
+            border-theme
             px-5
             py-5
             sm:px-8
           "
         >
           <div className="min-w-0">
-            <h2
-              className="
-                text-xl
-                font-bold
-                text-slate-900
-                sm:text-2xl
-              "
-            >
+            <h2 className="text-xl font-bold text-theme sm:text-2xl">
               Edit Task
             </h2>
 
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-1 text-sm text-muted-theme">
               Update your task information.
             </p>
           </div>
@@ -133,9 +126,9 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
             className="
               rounded-xl
               p-2
-              text-slate-500
+              text-muted-theme
               transition
-              hover:bg-slate-100
+              surface-hover-theme
             "
           >
             <X size={20} />
@@ -158,7 +151,7 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
             {/* Title */}
 
             <div>
-              <label className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-700">
+              <label className="mb-2 flex items-center gap-2 text-sm font-medium text-theme">
                 <Pencil size={16} />
                 Task Title
               </label>
@@ -174,15 +167,16 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
                   rounded-xl
                   sm:rounded-2xl
                   border
-                  border-slate-300
+                  border-theme
+                  surface-theme
+                  text-theme
                   px-4
                   py-3
                   text-sm
                   outline-none
                   transition
-                  focus:border-slate-900
                   focus:ring-4
-                  focus:ring-slate-100
+                  focus:ring-slate-200/40
                 "
               />
             </div>
@@ -190,7 +184,7 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
             {/* Description */}
 
             <div>
-              <label className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-700">
+              <label className="mb-2 flex items-center gap-2 text-sm font-medium text-theme">
                 <FileText size={16} />
                 Description
               </label>
@@ -206,15 +200,16 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
                   rounded-xl
                   sm:rounded-2xl
                   border
-                  border-slate-300
+                  border-theme
+                  surface-theme
+                  text-theme
                   px-4
                   py-3
                   text-sm
                   outline-none
                   transition
-                  focus:border-slate-900
                   focus:ring-4
-                  focus:ring-slate-100
+                  focus:ring-slate-200/40
                 "
               />
             </div>
@@ -226,7 +221,7 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
               {/* Category */}
 
               <div>
-                <label className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-700">
+                <label className="mb-2 flex items-center gap-2 text-sm font-medium text-theme">
                   <FolderOpen size={16} />
                   Category
                 </label>
@@ -239,15 +234,16 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
                     rounded-xl
                     sm:rounded-2xl
                     border
-                    border-slate-300
+                    border-theme
+                    surface-theme
+                    text-theme
                     px-4
                     py-3
                     text-sm
                     outline-none
                     transition
-                    focus:border-slate-900
                     focus:ring-4
-                    focus:ring-slate-100
+                    focus:ring-slate-200/40
                   "
                 >
                   <option>Work</option>
@@ -256,10 +252,10 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
                 </select>
               </div>
 
-              {/* Due */}
+              {/* Due Date */}
 
               <div>
-                <label className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-700">
+                <label className="mb-2 flex items-center gap-2 text-sm font-medium text-theme">
                   <Calendar size={16} />
                   Due Date
                 </label>
@@ -273,15 +269,16 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
                     rounded-xl
                     sm:rounded-2xl
                     border
-                    border-slate-300
+                    border-theme
+                    surface-theme
+                    text-theme
                     px-4
                     py-3
                     text-sm
                     outline-none
                     transition
-                    focus:border-slate-900
                     focus:ring-4
-                    focus:ring-slate-100
+                    focus:ring-slate-200/40
                   "
                 />
               </div>
@@ -289,7 +286,7 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
               {/* Status */}
 
               <div>
-                <label className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-700">
+                <label className="mb-2 flex items-center gap-2 text-sm font-medium text-theme">
                   <CheckCircle2 size={16} />
                   Status
                 </label>
@@ -302,15 +299,16 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
                     rounded-xl
                     sm:rounded-2xl
                     border
-                    border-slate-300
+                    border-theme
+                    surface-theme
+                    text-theme
                     px-4
                     py-3
                     text-sm
                     outline-none
                     transition
-                    focus:border-slate-900
                     focus:ring-4
-                    focus:ring-slate-100
+                    focus:ring-slate-200/40
                   "
                 >
                   <option value="todo">Todo</option>
@@ -322,7 +320,7 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
               {/* Priority */}
 
               <div>
-                <label className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-700">
+                <label className="mb-2 flex items-center gap-2 text-sm font-medium text-theme">
                   <Signal size={16} />
                   Priority
                 </label>
@@ -335,15 +333,16 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
                     rounded-xl
                     sm:rounded-2xl
                     border
-                    border-slate-300
+                    border-theme
+                    surface-theme
+                    text-theme
                     px-4
                     py-3
                     text-sm
                     outline-none
                     transition
-                    focus:border-slate-900
                     focus:ring-4
-                    focus:ring-slate-100
+                    focus:ring-slate-200/40
                   "
                 >
                   <option value="low">Low</option>
@@ -362,9 +361,8 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
                 flex-col-reverse
                 gap-3
                 border-t
-                border-slate-200
+                border-theme
                 pt-6
-
                 sm:flex-row
                 sm:justify-end
               "
@@ -377,14 +375,14 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
                   w-full
                   rounded-xl
                   border
-                  border-slate-300
+                  border-theme
+                  surface-theme
                   px-6
                   py-3
                   font-medium
-                  text-slate-700
+                  text-theme
                   transition
-                  hover:bg-slate-100
-
+                  surface-hover-theme
                   sm:w-auto
                 "
               >
@@ -401,16 +399,15 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
                   justify-center
                   gap-2
                   rounded-xl
-                  bg-slate-900
+                  primary-theme
                   px-6
                   py-3
                   font-medium
-                  text-white
                   transition
-                  hover:bg-black
+                  opacity-100
+                  hover:opacity-90
                   disabled:cursor-not-allowed
                   disabled:opacity-70
-
                   sm:w-auto
                 "
               >

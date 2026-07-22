@@ -32,18 +32,23 @@ const ConfirmDeleteModal = ({
       className="
         fixed inset-0 z-50
         flex items-center justify-center
-        bg-slate-900/50
-        backdrop-blur-sm
         p-4
       "
+      style={{
+        background: "rgba(15,23,42,.55)",
+        backdropFilter: "blur(8px)",
+      }}
     >
       <div
         className="
-          w-full max-w-md
+          card-theme
+          border-theme
+          shadow-theme
+          w-full
+          max-w-md
           rounded-3xl
-          bg-white
+          border
           p-6
-          shadow-2xl
         "
       >
         {/* Icon */}
@@ -51,12 +56,17 @@ const ConfirmDeleteModal = ({
         <div
           className="
             mx-auto
-            flex h-16 w-16
-            items-center justify-center
+            flex
+            h-16
+            w-16
+            items-center
+            justify-center
             rounded-full
-            bg-rose-100
-            text-rose-600
           "
+          style={{
+            background: "var(--danger-bg)",
+            color: "var(--danger)",
+          }}
         >
           <AlertTriangle size={30} />
         </div>
@@ -64,19 +74,19 @@ const ConfirmDeleteModal = ({
         {/* Content */}
 
         <div className="mt-6 text-center">
-          <h2 className="text-2xl font-bold text-slate-900">
+          <h2 className="text-theme text-2xl font-bold">
             Delete Task?
           </h2>
 
-          <p className="mt-3 text-sm leading-6 text-slate-500">
+          <p className="text-muted-theme mt-3 text-sm leading-6">
             You're about to permanently delete
           </p>
 
-          <p className="mt-2 break-words font-semibold text-slate-900">
+          <p className="text-theme mt-2 break-words font-semibold">
             "{taskTitle}"
           </p>
 
-          <p className="mt-3 text-sm text-slate-500">
+          <p className="text-muted-theme mt-3 text-sm">
             This action cannot be undone.
           </p>
         </div>
@@ -89,15 +99,16 @@ const ConfirmDeleteModal = ({
             onClick={onClose}
             disabled={loading}
             className="
+              surface-theme
+              surface-hover-theme
+              border-theme
+              text-theme
               rounded-xl
               border
-              border-slate-200
               px-5
               py-3
               font-medium
-              text-slate-700
               transition
-              hover:bg-slate-100
               disabled:cursor-not-allowed
               disabled:opacity-60
             "
@@ -110,19 +121,29 @@ const ConfirmDeleteModal = ({
             onClick={handleConfirm}
             disabled={loading}
             className="
-              flex items-center justify-center gap-2
+              flex
+              items-center
+              justify-center
+              gap-2
               rounded-xl
-              bg-rose-600
               px-5
               py-3
               font-medium
               text-white
               transition
-              hover:bg-rose-700
               active:scale-[0.98]
               disabled:cursor-not-allowed
               disabled:opacity-60
             "
+            style={{
+              background: "var(--danger)",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.filter = "brightness(.9)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.filter = "brightness(1)";
+            }}
           >
             <Trash2 size={18} />
 

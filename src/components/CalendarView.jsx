@@ -35,12 +35,12 @@ const CalendarView = () => {
             className="
               truncate
               rounded-md
-              bg-slate-900
               px-1.5
               py-0.5
               text-[10px]
               font-medium
-              text-white
+              bg-[var(--primary)]
+              text-[var(--primary-text)]
             "
           >
             {task.title}
@@ -48,7 +48,7 @@ const CalendarView = () => {
         ))}
 
         {dayTasks.length > 2 && (
-          <p className="text-[10px] text-slate-500">
+          <p className="text-[10px] text-muted-theme">
             +{dayTasks.length - 2} more
           </p>
         )}
@@ -58,15 +58,16 @@ const CalendarView = () => {
 
   return (
     <section
-      className="p-6 bg-white rounded-3xl
+      className="
+        card-theme
+        border-theme
+        shadow-theme
+        rounded-3xl
         border
-        border-slate-200
-        shadow-sm
+        p-6
       "
     >
-      <Calendar
-        tileContent={tileContent}
-      />
+      <Calendar tileContent={tileContent} />
     </section>
   );
 };
