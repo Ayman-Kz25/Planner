@@ -237,38 +237,6 @@ const TaskDetailModal = ({ task, onClose }) => {
             </div>
           </div>
         </div>
-
-        {/* Footer */}
-
-        <div
-          className="
-            border-t
-            border-slate-200
-            p-5
-            sm:px-8
-            items-end
-          "
-        >
-          <button
-            onClick={onClose}
-            className="
-              w-full
-              rounded-xl
-              border
-              border-slate-300
-              px-6
-              py-3
-              font-medium
-              text-slate-700
-              transition
-              hover:bg-slate-100
-
-              sm:w-auto
-            "
-          >
-            Close
-          </button>
-        </div>
       </div>
     </div>
   );
