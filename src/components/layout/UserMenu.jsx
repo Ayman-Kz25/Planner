@@ -19,7 +19,8 @@ const UserMenu = ({ user }) => {
 
     window.addEventListener("click", handleClickOutside);
 
-    return () => window.removeEventListener("click", handleClickOutside);
+    return () =>
+      window.removeEventListener("click", handleClickOutside);
   }, []);
 
   const avatar =
@@ -33,21 +34,22 @@ const UserMenu = ({ user }) => {
   };
 
   return (
-    <div ref={menuRef} className="relative flex-shrink-0">
+    <div
+      ref={menuRef}
+      className="relative flex-shrink-0"
+    >
       {/* Avatar */}
 
       <button
-        onClick={() => setOpen(!open)}
+        onClick={() => setOpen((prev) => !prev)}
         className="
           flex h-10 w-10
           sm:h-11 sm:w-11
           items-center justify-center
           rounded-full
           bg-slate-900
-          text-sm sm:text-base
-          font-semibold
+          text-sm font-semibold
           text-white
-          shadow-sm
           transition
           hover:scale-105
           active:scale-95
@@ -62,18 +64,27 @@ const UserMenu = ({ user }) => {
       {open && (
         <div
           className="
-            absolute right-0 mt-3
-            w-[92vw] max-w-[300px]
+            fixed
+            top-22
+            left-3
+            right-3
+            z-50
+
+            sm:absolute
+            sm:top-full
+            sm:right-0
+            sm:left-auto
+            sm:mt-3
+            sm:w-80
+
             rounded-2xl
             border border-slate-200
             bg-white
             p-4
-            shadow-xl
-            animate-in fade-in zoom-in-95
-            duration-150
+            shadow-2xl
           "
         >
-          {/* User */}
+          {/* Profile */}
 
           <div className="flex items-center gap-3">
             <div
@@ -90,18 +101,18 @@ const UserMenu = ({ user }) => {
               {avatar}
             </div>
 
-            <div className="min-w-0">
-              <h3 className="truncate font-semibold text-slate-900">
+            <div className="min-w-0 flex-1">
+              <h3 className="truncate text-base font-semibold">
                 {user?.displayName || "User"}
               </h3>
 
-              <p className="truncate text-sm text-slate-500">{user?.email}</p>
+              <p className="truncate text-sm text-slate-500">
+                {user?.email}
+              </p>
             </div>
           </div>
 
           <div className="my-4 border-t border-slate-200" />
-
-          {/* Menu */}
 
           <button
             className="
@@ -111,7 +122,6 @@ const UserMenu = ({ user }) => {
               text-sm
               hover:bg-slate-100
               transition
-              cursor-pointer
             "
           >
             <User size={18} />
@@ -126,7 +136,6 @@ const UserMenu = ({ user }) => {
               text-sm
               hover:bg-slate-100
               transition
-              cursor-pointer
             "
           >
             <Moon size={18} />
@@ -141,31 +150,25 @@ const UserMenu = ({ user }) => {
               text-sm
               hover:bg-slate-100
               transition
-              cursor-pointer
             "
           >
             <Settings size={18} />
             Settings
           </button>
 
-          <div className="my-3 border-t border-slate-200" />
+          <div className="my-4 border-t border-slate-200" />
 
           <button
             onClick={handleLogout}
             className="
               flex w-full items-center justify-center gap-2
               rounded-xl
-              bg-gradient-to-br
-                from-rose-300
-                to-rose-500
+              bg-rose-500
               px-4 py-3
               font-medium
               text-white
-              transition-colors
-              duration-300
-            hover:bg-rose-600
-              active:scale-[0.98]
-              cursor-pointer
+              transition
+              hover:bg-rose-600
             "
           >
             <LogOut size={18} />
@@ -176,4 +179,5 @@ const UserMenu = ({ user }) => {
     </div>
   );
 };
+
 export default UserMenu;
