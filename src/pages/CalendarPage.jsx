@@ -1,8 +1,24 @@
 import { CalendarDays } from "lucide-react";
-
 import CalendarView from "../components/CalendarView";
+import { useSettings } from "../context/SettingsContext";
+import { format } from "date-fns";
 
 const CalendarPage = () => {
+
+  const { settings } = useSettings();
+
+const today = (() => {
+  switch (settings.dateFormat) {
+    case "MM/DD/YYYY":
+      return format(new Date(), "MM/dd/yyyy");
+
+    case "YYYY/MM/DD":
+      return format(new Date(), "yyyy/MM/dd");
+
+    default:
+      return format(new Date(), "dd/MM/yyyy");
+  }
+})();
   return (
     <div className="space-y-8">
       {/* Hero */}
