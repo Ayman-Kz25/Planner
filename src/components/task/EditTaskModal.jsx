@@ -12,9 +12,11 @@ import {
 } from "lucide-react";
 
 import { useTasks } from "../../context/TaskContext";
+import { useSettings } from "../../context/SettingsContext";
 
 const EditTaskModal = ({ task, isOpen, onClose }) => {
   const { updateTask } = useTasks();
+  const { settings } = useSettings();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -22,7 +24,44 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
   const [status, setStatus] = useState("todo");
   const [priority, setPriority] = useState("medium");
   const [dueDate, setDueDate] = useState("");
+  const [dueTime, setDueTime] = useState("17:00");
   const [loading, setLoading] = useState(false);
+
+  const formatTaskTime = (date) => {
+    if (!date) return "";
+
+    return new Intl.DateTimeFormat(undefined, {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: settings.timeFormat === "12 Hours",
+    }).format(date);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!title.trim()) return;
+
+    setLoading(true);
+
+    try {
+      await updateTask(task.id, {
+        title,
+        description,
+        category,
+        status,
+        priority,
+        dueDate: dueDate ? new Date(`${dueDate}T${dueTime}`) : null,
+      });
+
+      onClose();
+    } catch (error) {
+      console.error(error);
+      alert("Failed to update task.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!task) return;
@@ -45,32 +84,6 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
   }, [task]);
 
   if (!isOpen || !task) return null;
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!title.trim()) return;
-
-    setLoading(true);
-
-    try {
-      await updateTask(task.id, {
-        title,
-        description,
-        category,
-        status,
-        priority,
-        dueDate: dueDate ? new Date(dueDate) : null,
-      });
-
-      onClose();
-    } catch (error) {
-      console.error(error);
-      alert("Failed to update task.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div
@@ -147,7 +160,6 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
           "
         >
           <div className="space-y-6">
-
             {/* Title */}
 
             <div>
@@ -217,7 +229,6 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
             {/* Grid */}
 
             <div className="grid gap-5 md:grid-cols-2">
-
               {/* Category */}
 
               <div>
@@ -280,6 +291,37 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
                     focus:ring-4
                     focus:ring-slate-200/40
                   "
+                />
+              </div>
+
+              {/* Due Time */}
+
+              <div>
+                <label className="mb-2 flex items-center gap-2 text-sm font-medium text-theme">
+                  <Calendar size={16} />
+                  Time
+                </label>
+
+                <input
+                  type="time"
+                  value={dueTime}
+                  onChange={(e) => setDueTime(e.target.value)}
+                  className="
+      w-full
+      rounded-xl
+      sm:rounded-2xl
+      border
+      border-theme
+      surface-theme
+      text-theme
+      px-4
+      py-3
+      text-sm
+      outline-none
+      transition
+      focus:ring-4
+      focus:ring-slate-200/40
+    "
                 />
               </div>
 
@@ -350,7 +392,6 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
                   <option value="high">High</option>
                 </select>
               </div>
-
             </div>
 
             {/* Footer */}
@@ -413,10 +454,7 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
               >
                 {loading ? (
                   <>
-                    <Loader2
-                      size={18}
-                      className="animate-spin"
-                    />
+                    <Loader2 size={18} className="animate-spin" />
                     Saving...
                   </>
                 ) : (
@@ -427,7 +465,6 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
                 )}
               </button>
             </div>
-
           </div>
         </form>
       </div>

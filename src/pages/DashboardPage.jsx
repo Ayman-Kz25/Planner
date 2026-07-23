@@ -1,11 +1,6 @@
 import { useMemo, useState } from "react";
-import { format, isPast, isToday } from "date-fns";
-import {
-  ClipboardList,
-  CheckCircle2,
-  Clock3,
-  ListTodo,
-} from "lucide-react";
+import { format, isBefore, isPast, isToday } from "date-fns";
+import { ClipboardList, CheckCircle2, Clock3, ListTodo } from "lucide-react";
 
 import { useAuth } from "../context/AuthContext";
 import { useTasks } from "../context/TaskContext";
@@ -88,17 +83,11 @@ const DashboardPage = () => {
         }
 
         if (filters.due === "overdue") {
-          pass =
-            pass &&
-            isPast(due) &&
-            task.status !== "completed";
+          pass = pass && isPast(due) && task.status !== "completed";
         }
 
         if (filters.due === "upcoming") {
-          pass =
-            pass &&
-            !isPast(due) &&
-            !isToday(due);
+          pass = pass && !isPast(due) && !isToday(due);
         }
       }
 
@@ -110,31 +99,38 @@ const DashboardPage = () => {
     return {
       total: tasks.length,
       todo: tasks.filter((t) => t.status === "todo").length,
-      progress: tasks.filter(
-        (t) => t.status === "in-progress"
-      ).length,
-      completed: tasks.filter(
-        (t) => t.status === "completed"
-      ).length,
+      progress: tasks.filter((t) => t.status === "in-progress").length,
+      completed: tasks.filter((t) => t.status === "completed").length,
     };
   }, [tasks]);
 
   const nearestTask = useMemo(() => {
-    const upcoming = tasks
-      .filter((task) => task.dueDate)
-      .sort((a, b) => {
-        const first = a.dueDate.seconds
-          ? new Date(a.dueDate.seconds * 1000)
-          : new Date(a.dueDate);
+    const now = new Date();
 
-        const second = b.dueDate.seconds
-          ? new Date(b.dueDate.seconds * 1000)
-          : new Date(b.dueDate);
+    return (
+      tasks
+        .filter((task) => {
+          if (!task.dueDate) return false;
+          if (task.status === "completed") return false;
 
-        return first - second;
-      });
+          const due = task.dueDate.seconds
+            ? new Date(task.dueDate.seconds * 1000)
+            : new Date(task.dueDate);
 
-    return upcoming[0];
+          return !isBefore(due, now);
+        })
+        .sort((a, b) => {
+          const first = a.dueDate.seconds
+            ? new Date(a.dueDate.seconds * 1000)
+            : new Date(a.dueDate);
+
+          const second = b.dueDate.seconds
+            ? new Date(b.dueDate.seconds * 1000)
+            : new Date(b.dueDate);
+
+          return first - second;
+        })[0] ?? null
+    );
   }, [tasks]);
 
   const cards = [
@@ -166,8 +162,7 @@ const DashboardPage = () => {
 
       <section className="space-y-2">
         <h1 className="text-theme text-3xl font-bold">
-          Welcome back,{" "}
-          {user?.displayName?.split(" ")[0] || "there"}
+          Welcome back, {user?.displayName?.split(" ")[0] || "there"}
         </h1>
 
         <p className="text-muted-theme">
@@ -177,17 +172,13 @@ const DashboardPage = () => {
         {nearestTask?.dueDate && (
           <p className="text-muted-theme text-sm">
             Next deadline:{" "}
-            <span className="text-theme font-medium">
-              {nearestTask.title}
-            </span>{" "}
+            <span className="text-theme font-medium">{nearestTask.title}</span>{" "}
             •{" "}
             {format(
               nearestTask.dueDate.seconds
-                ? new Date(
-                    nearestTask.dueDate.seconds * 1000
-                  )
+                ? new Date(nearestTask.dueDate.seconds * 1000)
                 : new Date(nearestTask.dueDate),
-              datePattern
+              datePattern,
             )}
           </p>
         )}
@@ -216,9 +207,7 @@ const DashboardPage = () => {
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-muted-theme text-sm">
-                    {card.title}
-                  </p>
+                  <p className="text-muted-theme text-sm">{card.title}</p>
 
                   <h2 className="text-theme mt-2 text-3xl font-bold">
                     {card.value}
@@ -236,24 +225,17 @@ const DashboardPage = () => {
 
       {/* Filters */}
 
-      <FilterBar
-        filters={filters}
-        setFilters={setFilters}
-      />
+      <FilterBar filters={filters} setFilters={setFilters} />
 
       {/* Tasks */}
 
       <section>
         <div className="mb-5 flex items-center justify-between">
-          <h2 className="text-theme text-xl font-semibold">
-            Tasks
-          </h2>
+          <h2 className="text-theme text-xl font-semibold">Tasks</h2>
 
           <span className="surface-theme text-muted-theme rounded-full px-3 py-1 text-sm">
             {filteredTasks.length}{" "}
-            {filteredTasks.length === 1
-              ? "Task"
-              : "Tasks"}
+            {filteredTasks.length === 1 ? "Task" : "Tasks"}
           </span>
         </div>
 
