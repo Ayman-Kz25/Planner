@@ -1,20 +1,17 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../calendar.css";
 
 import { format, isSameDay } from "date-fns";
-import {
-  CalendarDays,
-  FolderOpen,
-  Flag,
-  CheckCircle2,
-} from "lucide-react";
+import { CalendarDays, FolderOpen, Flag, CheckCircle2 } from "lucide-react";
 
 import { useTasks } from "../context/TaskContext";
+import { useSettings } from "../context/SettingsContext";
 
 const CalendarView = () => {
   const { tasks } = useTasks();
+  const { settings } = useSettings();
 
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -24,9 +21,7 @@ const CalendarView = () => {
     const dayTasks = tasks.filter((task) => {
       if (!task.dueDate) return false;
 
-      const taskDate = task.dueDate?.seconds
-        ? new Date(task.dueDate.seconds * 1000)
-        : new Date(task.dueDate);
+      const taskDate = getTaskDate(task);
 
       return (
         taskDate.getFullYear() === date.getFullYear() &&
@@ -67,15 +62,28 @@ const CalendarView = () => {
     );
   };
 
-  const selectedTasks = tasks.filter((task) => {
-    if (!task.dueDate) return false;
+  const selectedTasks = useMemo(() => {
+    return tasks.filter((task) => {
+      if (!task.dueDate) return false;
 
-    const taskDate = task.dueDate?.seconds
-      ? new Date(task.dueDate.seconds * 1000)
-      : new Date(task.dueDate);
+      const taskDate = getTaskDate(task);
 
-    return isSameDay(taskDate, selectedDate);
-  });
+      return isSameDay(taskDate, selectedDate);
+    });
+  }, [tasks, selectedDate]);
+
+  const formattedDate = (() => {
+    switch (settings.dateFormat) {
+      case "MM/DD/YYYY":
+        return format(selectedDate, "MM/dd/yyyy");
+
+      case "YYYY/MM/DD":
+        return format(selectedDate, "yyyy/MM/dd");
+
+      default:
+        return format(selectedDate, "dd/MM/yyyy");
+    }
+  })();
 
   return (
     <div className="space-y-6">
@@ -92,6 +100,9 @@ const CalendarView = () => {
         "
       >
         <Calendar
+          calendarType={
+            settings.weekStarts === "Monday" ? "iso8601" : "gregory"
+          }
           value={selectedDate}
           onChange={setSelectedDate}
           tileContent={tileContent}
@@ -118,7 +129,7 @@ const CalendarView = () => {
 
           <div>
             <h2 className="text-theme text-lg font-semibold">
-              {format(selectedDate, "MMMM dd, yyyy")}
+              {formattedDate}
             </h2>
 
             <p className="text-muted-theme text-sm">
@@ -139,9 +150,7 @@ const CalendarView = () => {
                   p-4
                 "
               >
-                <h3 className="text-theme font-semibold">
-                  {task.title}
-                </h3>
+                <h3 className="text-theme font-semibold">{task.title}</h3>
 
                 {task.description && (
                   <p className="text-muted-theme mt-2 text-sm">
@@ -181,14 +190,9 @@ const CalendarView = () => {
               text-center
             "
           >
-            <CalendarDays
-              size={36}
-              className="mx-auto mb-3 text-muted-theme"
-            />
+            <CalendarDays size={36} className="mx-auto mb-3 text-muted-theme" />
 
-            <h3 className="text-theme font-semibold">
-              No Tasks Assigned
-            </h3>
+            <h3 className="text-theme font-semibold">No Tasks Assigned</h3>
 
             <p className="text-muted-theme mt-2 text-sm">
               You don't have any tasks scheduled for this day.

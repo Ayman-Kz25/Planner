@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { AlertTriangle, Trash2 } from "lucide-react";
+import toast from "react-hot-toast";
 
 const ConfirmDeleteModal = ({
   isOpen,
@@ -9,23 +10,39 @@ const ConfirmDeleteModal = ({
 }) => {
   const [loading, setLoading] = useState(false);
 
-  if (!isOpen) return null;
-
-  const handleConfirm = async () => {
-    if (!onConfirm) return;
+  const handleConfirm = useCallback(async () => {
+    if (!onConfirm || loading) return;
 
     setLoading(true);
 
     try {
       await onConfirm();
+      toast.success("Task deleted.");
       onClose();
     } catch (error) {
       console.error("Failed to delete task:", error);
-      alert("Error deleting task. Please try again.");
+      toast.error("Error deleting task. Please try again.");
     } finally {
       setLoading(false);
     }
-  };
+  }, [loading, onConfirm, onClose]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape" && !loading) {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () =>
+      window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, loading, onClose]);
+
+  if (!isOpen) return null;
 
   return (
     <div
@@ -51,8 +68,6 @@ const ConfirmDeleteModal = ({
           p-6
         "
       >
-        {/* Icon */}
-
         <div
           className="
             mx-auto
@@ -71,8 +86,6 @@ const ConfirmDeleteModal = ({
           <AlertTriangle size={30} />
         </div>
 
-        {/* Content */}
-
         <div className="mt-6 text-center">
           <h2 className="text-theme text-2xl font-bold">
             Delete Task?
@@ -90,8 +103,6 @@ const ConfirmDeleteModal = ({
             This action cannot be undone.
           </p>
         </div>
-
-        {/* Buttons */}
 
         <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-center">
           <button
