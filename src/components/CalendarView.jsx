@@ -15,6 +15,14 @@ const CalendarView = () => {
 
   const [selectedDate, setSelectedDate] = useState(new Date());
 
+  const getTaskDate = (task) => {
+    if (!task.dueDate) return null;
+
+    return task.dueDate.seconds
+      ? new Date(task.dueDate.seconds * 1000)
+      : new Date(task.dueDate);
+  };
+
   const tileContent = ({ date, view }) => {
     if (view !== "month") return null;
 
