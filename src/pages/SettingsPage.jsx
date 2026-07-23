@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Bell,
   CalendarDays,
@@ -6,15 +7,31 @@ import {
   FolderOpen,
   Save,
 } from "lucide-react";
+import toast from "react-hot-toast";
 
 import { useSettings } from "../context/SettingsContext";
 import Toggle from "../components/Toggle";
 
 const SettingsPage = () => {
-  const { settings, updateSetting } = useSettings();
+  const { settings, updateSettings } = useSettings();
+
+  const [form, setForm] = useState(settings);
+
+  useEffect(() => {
+    setForm(settings);
+  }, [settings]);
+
+  const setValue = (key, value) => {
+    setForm((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
 
   const handleSave = () => {
-    alert("Settings saved successfully.");
+    updateSettings(form);
+
+    toast.success("Settings saved successfully!");
   };
 
   const selectClasses = `
@@ -40,7 +57,9 @@ const SettingsPage = () => {
       {/* Header */}
 
       <section className="card-theme border-theme shadow-theme rounded-3xl border p-6 sm:p-8">
-        <h1 className="text-theme text-2xl font-bold md:text-3xl">Settings</h1>
+        <h1 className="text-theme text-2xl font-bold md:text-3xl">
+          Settings
+        </h1>
 
         <p className="text-muted-theme mt-2 max-w-2xl text-sm leading-6 sm:text-base">
           Customize how Planner behaves and personalize your experience.
@@ -50,8 +69,6 @@ const SettingsPage = () => {
       {/* Preferences */}
 
       <section className="card-theme border-theme shadow-theme overflow-hidden rounded-3xl border">
-        {/* Notifications */}
-
         <div className="border-theme flex flex-col gap-4 border-b p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
           <div className="flex items-start gap-4">
             <div className="icon-surface-theme flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl sm:h-12 sm:w-12">
@@ -63,21 +80,19 @@ const SettingsPage = () => {
                 Notifications
               </h3>
 
-              <p className="text-muted-theme mt-1 text-sm leading-5">
+              <p className="text-muted-theme mt-1 text-sm">
                 Receive reminders before your tasks are due.
               </p>
             </div>
           </div>
 
           <Toggle
-            checked={settings.notifications}
+            checked={form.notifications}
             onChange={() =>
-              updateSetting("notifications", !settings.notifications)
+              setValue("notifications", !form.notifications)
             }
           />
         </div>
-
-        {/* Auto Delete */}
 
         <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
           <div className="flex items-start gap-4">
@@ -90,15 +105,17 @@ const SettingsPage = () => {
                 Auto Delete Completed Tasks
               </h3>
 
-              <p className="text-muted-theme mt-1 text-sm leading-5">
-                Automatically remove completed tasks after they're finished.
+              <p className="text-muted-theme mt-1 text-sm">
+                Automatically remove completed tasks after completion.
               </p>
             </div>
           </div>
 
           <Toggle
-            checked={settings.autoDelete}
-            onChange={() => updateSetting("autoDelete", !settings.autoDelete)}
+            checked={form.autoDelete}
+            onChange={() =>
+              setValue("autoDelete", !form.autoDelete)
+            }
           />
         </div>
       </section>
@@ -106,18 +123,18 @@ const SettingsPage = () => {
       {/* Form */}
 
       <section className="card-theme border-theme shadow-theme rounded-3xl border p-6">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          {/* Category */}
-
+        <div className="grid gap-6 lg:grid-cols-2">
           <div>
-            <label className="text-theme mb-2 flex items-center gap-2 text-sm font-medium sm:text-base">
+            <label className="text-theme mb-2 flex items-center gap-2 font-medium">
               <FolderOpen size={18} />
               Default Category
             </label>
 
             <select
-              value={settings.defaultCategory}
-              onChange={(e) => updateSetting("defaultCategory", e.target.value)}
+              value={form.defaultCategory}
+              onChange={(e) =>
+                setValue("defaultCategory", e.target.value)
+              }
               className={selectClasses}
             >
               <option>Work</option>
@@ -126,17 +143,17 @@ const SettingsPage = () => {
             </select>
           </div>
 
-          {/* Priority */}
-
           <div>
-            <label className="text-theme mb-2 flex items-center gap-2 text-sm font-medium sm:text-base">
+            <label className="text-theme mb-2 flex items-center gap-2 font-medium">
               <Flag size={18} />
               Default Priority
             </label>
 
             <select
-              value={settings.defaultPriority}
-              onChange={(e) => updateSetting("defaultPriority", e.target.value)}
+              value={form.defaultPriority}
+              onChange={(e) =>
+                setValue("defaultPriority", e.target.value)
+              }
               className={selectClasses}
             >
               <option>Low</option>
@@ -145,17 +162,17 @@ const SettingsPage = () => {
             </select>
           </div>
 
-          {/* Week */}
-
           <div>
-            <label className="text-theme mb-2 flex items-center gap-2 text-sm font-medium sm:text-base">
+            <label className="text-theme mb-2 flex items-center gap-2 font-medium">
               <CalendarDays size={18} />
               Week Starts On
             </label>
 
             <select
-              value={settings.weekStarts}
-              onChange={(e) => updateSetting("weekStarts", e.target.value)}
+              value={form.weekStarts}
+              onChange={(e) =>
+                setValue("weekStarts", e.target.value)
+              }
               className={selectClasses}
             >
               <option>Monday</option>
@@ -163,17 +180,17 @@ const SettingsPage = () => {
             </select>
           </div>
 
-          {/* Time */}
-
           <div>
-            <label className="text-theme mb-2 flex items-center gap-2 text-sm font-medium sm:text-base">
+            <label className="text-theme mb-2 flex items-center gap-2 font-medium">
               <Clock3 size={18} />
               Time Format
             </label>
 
             <select
-              value={settings.timeFormat}
-              onChange={(e) => updateSetting("timeFormat", e.target.value)}
+              value={form.timeFormat}
+              onChange={(e) =>
+                setValue("timeFormat", e.target.value)
+              }
               className={selectClasses}
             >
               <option>24 Hours</option>
@@ -181,16 +198,16 @@ const SettingsPage = () => {
             </select>
           </div>
 
-          {/* Date */}
-
           <div className="lg:col-span-2">
-            <label className="text-theme mb-2 block text-sm font-medium sm:text-base">
+            <label className="text-theme mb-2 block font-medium">
               Date Format
             </label>
 
             <select
-              value={settings.dateFormat}
-              onChange={(e) => updateSetting("dateFormat", e.target.value)}
+              value={form.dateFormat}
+              onChange={(e) =>
+                setValue("dateFormat", e.target.value)
+              }
               className={selectClasses}
             >
               <option>DD/MM/YYYY</option>
@@ -200,25 +217,10 @@ const SettingsPage = () => {
           </div>
         </div>
 
-        <div className="mt-8 flex">
+        <div className="mt-8 flex justify-end">
           <button
             onClick={handleSave}
-            className="
-              primary-theme
-              flex
-              w-full
-              items-center
-              justify-center
-              gap-2
-              rounded-2xl
-              px-6
-              py-3
-              font-medium
-              transition
-              hover:opacity-90
-              sm:ml-auto
-              sm:w-auto
-            "
+            className="primary-theme flex w-full items-center justify-center gap-2 rounded-2xl px-6 py-3 font-medium transition hover:opacity-90 sm:w-auto cursor-pointer"
           >
             <Save size={18} />
             Save Settings

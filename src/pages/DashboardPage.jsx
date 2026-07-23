@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { isPast, isToday } from "date-fns";
+import { format, isPast, isToday } from "date-fns";
 import {
   ClipboardList,
   CheckCircle2,
@@ -9,6 +9,8 @@ import {
 
 import { useAuth } from "../context/AuthContext";
 import { useTasks } from "../context/TaskContext";
+import { useSettings } from "../context/SettingsContext";
+
 import useTaskActions from "../hooks/useTaskActions";
 
 import TaskList from "../components/task/TaskList";
@@ -20,6 +22,7 @@ import EmptyState from "../components/ui/EmptyState";
 const DashboardPage = () => {
   const { user } = useAuth();
   const { tasks } = useTasks();
+  const { settings } = useSettings();
 
   const {
     selectedTask,
@@ -38,6 +41,19 @@ const DashboardPage = () => {
     priority: "",
     due: "",
   });
+
+  const datePattern = useMemo(() => {
+    switch (settings.dateFormat) {
+      case "MM/DD/YYYY":
+        return "MM/dd/yyyy";
+
+      case "YYYY-MM-DD":
+        return "yyyy-MM-dd";
+
+      default:
+        return "dd/MM/yyyy";
+    }
+  }, [settings.dateFormat]);
 
   const filteredTasks = useMemo(() => {
     return tasks.filter((task) => {
@@ -90,21 +106,36 @@ const DashboardPage = () => {
     });
   }, [tasks, filters]);
 
-  const stats = useMemo(
-    () => ({
+  const stats = useMemo(() => {
+    return {
       total: tasks.length,
-      todo: tasks.filter(
-        (t) => t.status === "todo"
-      ).length,
+      todo: tasks.filter((t) => t.status === "todo").length,
       progress: tasks.filter(
         (t) => t.status === "in-progress"
       ).length,
       completed: tasks.filter(
         (t) => t.status === "completed"
       ).length,
-    }),
-    [tasks]
-  );
+    };
+  }, [tasks]);
+
+  const nearestTask = useMemo(() => {
+    const upcoming = tasks
+      .filter((task) => task.dueDate)
+      .sort((a, b) => {
+        const first = a.dueDate.seconds
+          ? new Date(a.dueDate.seconds * 1000)
+          : new Date(a.dueDate);
+
+        const second = b.dueDate.seconds
+          ? new Date(b.dueDate.seconds * 1000)
+          : new Date(b.dueDate);
+
+        return first - second;
+      });
+
+    return upcoming[0];
+  }, [tasks]);
 
   const cards = [
     {
@@ -131,21 +162,38 @@ const DashboardPage = () => {
 
   return (
     <div className="space-y-8">
-
       {/* Hero */}
 
-      <section>
+      <section className="space-y-2">
         <h1 className="text-theme text-3xl font-bold">
           Welcome back,{" "}
           {user?.displayName?.split(" ")[0] || "there"}
         </h1>
 
-        <p className="text-muted-theme mt-2">
+        <p className="text-muted-theme">
           Stay organized and finish today's priorities.
         </p>
+
+        {nearestTask?.dueDate && (
+          <p className="text-muted-theme text-sm">
+            Next deadline:{" "}
+            <span className="text-theme font-medium">
+              {nearestTask.title}
+            </span>{" "}
+            •{" "}
+            {format(
+              nearestTask.dueDate.seconds
+                ? new Date(
+                    nearestTask.dueDate.seconds * 1000
+                  )
+                : new Date(nearestTask.dueDate),
+              datePattern
+            )}
+          </p>
+        )}
       </section>
 
-      {/* Stats */}
+      {/* Statistics */}
 
       <section className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
         {cards.map((card) => {
@@ -156,19 +204,17 @@ const DashboardPage = () => {
               key={card.title}
               className="
                 card-theme
-                border
                 border-theme
-                rounded-3xl
-                p-6
                 shadow-theme
+                rounded-3xl
+                border
+                p-6
                 transition-all
                 duration-300
                 hover:-translate-y-1
-                hover:shadow-lg
               "
             >
               <div className="flex items-center justify-between">
-
                 <div>
                   <p className="text-muted-theme text-sm">
                     {card.title}
@@ -179,17 +225,9 @@ const DashboardPage = () => {
                   </h2>
                 </div>
 
-                <div
-                  className="
-                    surface-theme
-                    text-theme
-                    rounded-2xl
-                    p-3
-                  "
-                >
+                <div className="surface-theme text-theme rounded-2xl p-3">
                   <Icon size={24} />
                 </div>
-
               </div>
             </div>
           );
@@ -206,29 +244,17 @@ const DashboardPage = () => {
       {/* Tasks */}
 
       <section>
-
         <div className="mb-5 flex items-center justify-between">
-
           <h2 className="text-theme text-xl font-semibold">
             Tasks
           </h2>
 
-          <span
-            className="
-              surface-theme
-              text-muted-theme
-              rounded-full
-              px-3
-              py-1
-              text-sm
-            "
-          >
+          <span className="surface-theme text-muted-theme rounded-full px-3 py-1 text-sm">
             {filteredTasks.length}{" "}
             {filteredTasks.length === 1
               ? "Task"
               : "Tasks"}
           </span>
-
         </div>
 
         {filteredTasks.length ? (
@@ -243,7 +269,6 @@ const DashboardPage = () => {
             description="Try changing your filters or create a new task."
           />
         )}
-
       </section>
 
       {/* Modals */}
