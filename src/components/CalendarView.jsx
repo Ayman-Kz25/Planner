@@ -1,11 +1,22 @@
+import { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../calendar.css";
+
+import { format, isSameDay } from "date-fns";
+import {
+  CalendarDays,
+  FolderOpen,
+  Flag,
+  CheckCircle2,
+} from "lucide-react";
 
 import { useTasks } from "../context/TaskContext";
 
 const CalendarView = () => {
   const { tasks } = useTasks();
+
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const tileContent = ({ date, view }) => {
     if (view !== "month") return null;
@@ -35,11 +46,11 @@ const CalendarView = () => {
             className="
               truncate
               rounded-md
+              bg-[var(--primary)]
               px-1.5
               py-0.5
               text-[10px]
               font-medium
-              bg-[var(--primary)]
               text-[var(--primary-text)]
             "
           >
@@ -56,19 +67,136 @@ const CalendarView = () => {
     );
   };
 
+  const selectedTasks = tasks.filter((task) => {
+    if (!task.dueDate) return false;
+
+    const taskDate = task.dueDate?.seconds
+      ? new Date(task.dueDate.seconds * 1000)
+      : new Date(task.dueDate);
+
+    return isSameDay(taskDate, selectedDate);
+  });
+
   return (
-    <section
-      className="
-        card-theme
-        border-theme
-        shadow-theme
-        rounded-3xl
-        border
-        p-6
-      "
-    >
-      <Calendar tileContent={tileContent} />
-    </section>
+    <div className="space-y-6">
+      {/* Calendar */}
+
+      <section
+        className="
+          card-theme
+          border-theme
+          shadow-theme
+          rounded-3xl
+          border
+          p-6
+        "
+      >
+        <Calendar
+          value={selectedDate}
+          onChange={setSelectedDate}
+          tileContent={tileContent}
+        />
+      </section>
+
+      {/* Mobile Selected Date Tasks */}
+
+      <section
+        className="
+          card-theme
+          border-theme
+          shadow-theme
+          rounded-3xl
+          border
+          p-5
+          md:hidden
+        "
+      >
+        <div className="flex items-center gap-3">
+          <div className="icon-surface-theme rounded-xl p-3">
+            <CalendarDays size={20} />
+          </div>
+
+          <div>
+            <h2 className="text-theme text-lg font-semibold">
+              {format(selectedDate, "MMMM dd, yyyy")}
+            </h2>
+
+            <p className="text-muted-theme text-sm">
+              {selectedTasks.length}{" "}
+              {selectedTasks.length === 1 ? "task" : "tasks"}
+            </p>
+          </div>
+        </div>
+
+        {selectedTasks.length ? (
+          <div className="mt-5 space-y-4">
+            {selectedTasks.map((task) => (
+              <div
+                key={task.id}
+                className="
+                  surface-theme
+                  rounded-2xl
+                  p-4
+                "
+              >
+                <h3 className="text-theme font-semibold">
+                  {task.title}
+                </h3>
+
+                {task.description && (
+                  <p className="text-muted-theme mt-2 text-sm">
+                    {task.description}
+                  </p>
+                )}
+
+                <div className="mt-4 flex flex-wrap gap-3 text-xs">
+                  <div className="flex items-center gap-1 text-theme">
+                    <FolderOpen size={14} />
+                    {task.category}
+                  </div>
+
+                  <div className="flex items-center gap-1 text-theme">
+                    <Flag size={14} />
+                    {task.priority}
+                  </div>
+
+                  <div className="flex items-center gap-1 text-theme">
+                    <CheckCircle2 size={14} />
+                    {task.status}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div
+            className="
+              surface-theme
+              mt-5
+              rounded-2xl
+              border
+              border-dashed
+              border-theme
+              p-8
+              text-center
+            "
+          >
+            <CalendarDays
+              size={36}
+              className="mx-auto mb-3 text-muted-theme"
+            />
+
+            <h3 className="text-theme font-semibold">
+              No Tasks Assigned
+            </h3>
+
+            <p className="text-muted-theme mt-2 text-sm">
+              You don't have any tasks scheduled for this day.
+            </p>
+          </div>
+        )}
+      </section>
+    </div>
   );
 };
 
