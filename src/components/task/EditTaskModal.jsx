@@ -222,6 +222,7 @@ const EditTaskModal = ({ task, isOpen, onClose }) => {
                   transition
                   focus:ring-4
                   focus:ring-slate-200/40
+                  whitespace-pre
                 "
               />
             </div>

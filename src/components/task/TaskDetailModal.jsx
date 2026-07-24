@@ -123,7 +123,7 @@ const TaskDetailModal = ({ task, onClose }) => {
                   className="text-muted-theme"
                 />
 
-                <h3 className="text-theme font-semibold">
+                <h3 className="text-theme font-semibold whitespace-pre">
                   Description
                 </h3>
               </div>
