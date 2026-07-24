@@ -1,94 +1,89 @@
-# 📝 Planner
+# Planner
 
-A modern, responsive task management application built with **React** and **Vite**.  
-This app helps you organize tasks by category, status, priority, and due date, with support for editing, deleting, and calendar-based viewing.
+A modern task management application built with **React**, **Vite**, **Tailwind CSS**, and **Firebase**. Planner helps users organize tasks, manage priorities, and keep track of deadlines through a clean, responsive interface.
 
-Designed with clean architecture, reusable components, and scalable state management.
+## Live Demo
 
----
+🔗 [Planner App Demo](https://planner-ochre-kappa.vercel.app)
 
-## ✨ Features
+## Features
 
-- ✅ Create, edit, and delete tasks
-- 🗂️ Categorize tasks (Work, Personal, Study)
-- 🔍 Filter tasks by:
-  - Status (Todo, In Progress, Completed)
-  - Priority (Low, Medium, High)
-  - Due Date (Overdue, Today, Upcoming)
-- 📆 Calendar view for task deadlines
-- 🧭 Category-specific pages
-- 🪟 Edit & confirm delete modals
-- ⚡ Optimized filtering using `useMemo`
-- 🎨 Clean, responsive UI
+- Secure authentication with Firebase
+- Create, update, and delete tasks
+- Organize tasks by category, priority, and status
+- Calendar view for scheduled tasks
+- Search and filter tasks
+- Customizable user preferences
+- Light and dark theme
+- Responsive design
 
----
+## Tech Stack
 
-## 🛠️ Tech Stack
+### Frontend
 
-- **Frontend:** React, React Router
-- **State Management:** Context API
-- **Date Handling:** date-fns
-- **Styling:** CSS / Utility classes
-- **Data Source:** Firebase-compatible structure (supports Firestore timestamps)
+- React
+- Vite
+- Tailwind CSS
+- React Router
+- Context API
+- React Calendar
+- date-fns
+- Lucide React
+- React Hot Toast
 
----
+### Backend
 
-## 📁 Project Structure
+- Firebase Authentication
+- Cloud Firestore
+- Firebase Storage
 
-```txt
-src/
-├── components/
-│   ├── filters/
-│   │   └── FilterBar.jsx
-│   ├── layout/
-│   │   ├── AppLayout.jsx
-│   │   ├── Header.jsx
-│   │   └── Footer.jsx
-│   ├── task/
-│   │   ├── AddTaskModal.jsx
-│   │   └── ConfirmDeleteModal.jsx
-│   │   ├── EditTaskModal.jsx
-│   │   ├── TaskCard.jsx
-│   │   ├── TaskList.jsx
-│   │   └── TaskDetailModal.jsx
-│   └── ui/
-│       └── EmptyState.jsx
-│   └── CalendarView.jsx
-│
-├── context/
-│   └── TaskContext.jsx
-│
-├── firebase/
-│   ├── auth.js
-│   ├── firebase.config.js
-│   └── firestore.js
-│
-├── pages/
-│   └── CalendarPage.jsx
-│   ├── CategoryPage.jsx
-│   ├── CompletedPage.jsx
-│   ├── DashboardPage.jsx
-│   └── InProgressPage.jsx
-│
-├── services/
-│   └── taskService.js
-│
-├── utils/
-│   └── filterTasks.js
-│
-├── App.jsx
-├── index.css
-└── main.jsx
+## Getting Started
+
+### Clone the repository
+
+```bash
+git clone https://github.com/Ayman-Kz25/Planner
 ```
 
----
+### Navigate to the project
 
-## 📄 License
+```bash
+cd planner
+```
 
-This project is licensed under the **MIT License**.
+### Install dependencies
 
----
+```bash
+npm install
+```
 
-## 👨‍💻 Author
+### Configure environment variables
 
-Built with ❤️ by **Ayman Kz**
+Create a `.env` file in the project root and add your Firebase configuration.
+
+```env
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=
+VITE_FIREBASE_PROJECT_ID=
+VITE_FIREBASE_STORAGE_BUCKET=
+VITE_FIREBASE_MESSAGING_SENDER_ID=
+VITE_FIREBASE_APP_ID=
+```
+
+### Run the development server
+
+```bash
+npm run dev
+```
+
+## License
+
+This project is licensed under the MIT License.
+
+## Connect
+
+GitHub: https://github.com/Ayman-Kz25
+
+LinkedIn: https://www.linkedin.com/in/ayman-kz-8807b4379
+
+If you found this project helpful, consider giving it a ⭐.
