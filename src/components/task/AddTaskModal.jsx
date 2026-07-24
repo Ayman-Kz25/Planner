@@ -171,7 +171,7 @@ const AddTaskModal = ({ isOpen, onClose }) => {
                 placeholder="Write task details..."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="surface-theme border-theme text-theme w-full resize-none rounded-xl border px-4 py-3 text-sm outline-none transition placeholder:text-gray-400 focus:border-[var(--primary)] focus:ring-4 focus:ring-[color:var(--shadow)] sm:rounded-2xl"
+                className="surface-theme border-theme text-theme w-full resize-none rounded-xl border px-4 py-3 text-sm outline-none transition placeholder:text-gray-400 focus:border-[var(--primary)] focus:ring-4 focus:ring-[color:var(--shadow)] sm:rounded-2xl whitespace-pre"
               />
             </div>
 
