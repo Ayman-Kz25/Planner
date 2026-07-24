@@ -138,7 +138,7 @@ const TaskCard = ({
           </h3>
 
           {task.description && (
-            <p className="text-muted-theme mt-2 line-clamp-2 text-sm leading-6">
+            <p className="text-muted-theme mt-2 line-clamp-1 text-sm leading-6">
               {task.description}
             </p>
           )}
