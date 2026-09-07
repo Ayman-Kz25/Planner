@@ -57,9 +57,7 @@ const SettingsPage = () => {
       {/* Header */}
 
       <section className="card-theme border-theme shadow-theme rounded-3xl border p-6 sm:p-8">
-        <h1 className="text-theme text-2xl font-bold md:text-3xl">
-          Settings
-        </h1>
+        <h1 className="text-theme text-2xl font-bold md:text-3xl">Settings</h1>
 
         <p className="text-muted-theme mt-2 max-w-2xl text-sm leading-6 sm:text-base">
           Customize how Planner behaves and personalize your experience.
@@ -69,6 +67,7 @@ const SettingsPage = () => {
       {/* Preferences */}
 
       <section className="card-theme border-theme shadow-theme overflow-hidden rounded-3xl border">
+        {/* Notifications */}
         <div className="border-theme flex flex-col gap-4 border-b p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
           <div className="flex items-start gap-4">
             <div className="icon-surface-theme flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl sm:h-12 sm:w-12">
@@ -88,12 +87,47 @@ const SettingsPage = () => {
 
           <Toggle
             checked={form.notifications}
-            onChange={() =>
-              setValue("notifications", !form.notifications)
-            }
+            onChange={() => setValue("notifications", !form.notifications)}
           />
         </div>
 
+        {/* Reminder Time */}
+        <div className="border-theme flex flex-col gap-4 border-b p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+          <div className="flex items-start gap-4">
+            <div className="icon-surface-theme flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl sm:h-12 sm:w-12">
+              <Clock3 size={20} />
+            </div>
+
+            <div>
+              <h3 className="text-theme text-base font-semibold">
+                Reminder Time
+              </h3>
+
+              <p className="text-muted-theme mt-1 text-sm">
+                Choose how early Planner should remind you about upcoming tasks.
+              </p>
+            </div>
+          </div>
+
+          <select
+            value={form.reminderMinutes ?? 30}
+            onChange={(e) =>
+              setValue("reminderMinutes", Number(e.target.value))
+            }
+            disabled={!form.notifications}
+            className={`${selectClasses} sm:max-w-xs`}
+          >
+            <option value={5}>5 minutes before</option>
+            <option value={10}>10 minutes before</option>
+            <option value={15}>15 minutes before</option>
+            <option value={30}>30 minutes before</option>
+            <option value={60}>1 hour before</option>
+            <option value={120}>2 hours before</option>
+            <option value={1440}>1 day before</option>
+          </select>
+        </div>
+
+        {/* Auto Delete */}
         <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
           <div className="flex items-start gap-4">
             <div className="icon-surface-theme flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl sm:h-12 sm:w-12">
@@ -113,9 +147,7 @@ const SettingsPage = () => {
 
           <Toggle
             checked={form.autoDelete}
-            onChange={() =>
-              setValue("autoDelete", !form.autoDelete)
-            }
+            onChange={() => setValue("autoDelete", !form.autoDelete)}
           />
         </div>
       </section>
@@ -132,9 +164,7 @@ const SettingsPage = () => {
 
             <select
               value={form.defaultCategory}
-              onChange={(e) =>
-                setValue("defaultCategory", e.target.value)
-              }
+              onChange={(e) => setValue("defaultCategory", e.target.value)}
               className={selectClasses}
             >
               <option>Work</option>
@@ -151,9 +181,7 @@ const SettingsPage = () => {
 
             <select
               value={form.defaultPriority}
-              onChange={(e) =>
-                setValue("defaultPriority", e.target.value)
-              }
+              onChange={(e) => setValue("defaultPriority", e.target.value)}
               className={selectClasses}
             >
               <option>Low</option>
@@ -170,9 +198,7 @@ const SettingsPage = () => {
 
             <select
               value={form.weekStarts}
-              onChange={(e) =>
-                setValue("weekStarts", e.target.value)
-              }
+              onChange={(e) => setValue("weekStarts", e.target.value)}
               className={selectClasses}
             >
               <option>Monday</option>
@@ -188,9 +214,7 @@ const SettingsPage = () => {
 
             <select
               value={form.timeFormat}
-              onChange={(e) =>
-                setValue("timeFormat", e.target.value)
-              }
+              onChange={(e) => setValue("timeFormat", e.target.value)}
               className={selectClasses}
             >
               <option>24 Hours</option>
@@ -205,9 +229,7 @@ const SettingsPage = () => {
 
             <select
               value={form.dateFormat}
-              onChange={(e) =>
-                setValue("dateFormat", e.target.value)
-              }
+              onChange={(e) => setValue("dateFormat", e.target.value)}
               className={selectClasses}
             >
               <option>DD/MM/YYYY</option>

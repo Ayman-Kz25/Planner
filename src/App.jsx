@@ -16,12 +16,14 @@ import ThemePage from "./pages/ThemePage";
 import SettingsPage from "./pages/SettingsPage";
 import "./index.css";
 import { Toaster } from "react-hot-toast";
+import TaskAutomation from "./components/TaskAutomation";
 
 const App = () => {
   return (
     <>
       <BrowserRouter>
         <ScrollToTop />
+        <TaskAutomation />
         <Routes>
           {/* Public */}
           <Route path="/login" element={<LoginPage />} />
